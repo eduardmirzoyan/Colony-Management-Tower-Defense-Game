@@ -1,0 +1,44 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class AnimationHandler : MonoBehaviour
+{
+    [SerializeField] private Animator animator;
+    [SerializeField] private bool isFacingRight;
+
+    private void Start()
+    {
+        isFacingRight = true;
+        animator.Play("Idle");
+    }
+
+    public void HandleAnimation(Vector2 velocity)
+    {
+        if (velocity.magnitude > 0.1f)
+        {
+            animator.Play("Run");
+            FlipModel(velocity.normalized);
+        }
+        else
+        {
+            animator.Play("Idle");
+        }
+    }
+
+    private void FlipModel(Vector3 direction)
+    {
+        // If you are moving right and facing left, then flip
+        if (direction.x > 0 && !isFacingRight)
+        {
+            isFacingRight = true;
+            transform.Rotate(0f, 180f, 0f);
+        }
+        // Else if you are moving left and facing right, also flip
+        else if (direction.x < 0 && isFacingRight)
+        {
+            isFacingRight = false;
+            transform.Rotate(0f, 180f, 0f);
+        }
+    }
+}
