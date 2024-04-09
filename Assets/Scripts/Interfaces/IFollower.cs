@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IFollower
 {
-    public abstract void Follow(Transform source);
+    public abstract void Follow(UnitData unitData);
 }

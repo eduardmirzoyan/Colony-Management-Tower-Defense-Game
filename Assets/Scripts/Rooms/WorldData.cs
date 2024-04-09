@@ -6,12 +6,17 @@ using UnityEngine;
 public class WorldData
 {
     public List<RoomData> rooms;
-    public RoomData currentRoom;
+    public UnitData playerData;
 
     public WorldData()
     {
         rooms = new List<RoomData>();
-        currentRoom = null;
+        playerData = null;
+    }
+
+    public void AssignPlayer(UnitData playerData)
+    {
+        this.playerData = playerData;
     }
 
     public void AddRoom(RoomData room)

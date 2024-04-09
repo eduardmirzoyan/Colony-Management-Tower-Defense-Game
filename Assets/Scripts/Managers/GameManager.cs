@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     {
         // Create world
         WorldManager.instance.GenerateWorld(out worldData);
+        InitializeSpawners();
 
         StartCoroutine(DelayedStart());
     }
@@ -33,8 +34,8 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitForSeconds(0.1f);
 
-        DiscoverRoom(worldData.currentRoom);
-        EnterRoom(worldData.currentRoom);
+        DiscoverRoom(worldData.playerData.roomData);
+        EnterRoom(worldData.playerData.roomData);
 
         yield return new WaitForSeconds(1f);
 
@@ -44,15 +45,15 @@ public class GameManager : MonoBehaviour
     public void EnterRoom(RoomData roomData)
     {
         // Leave previous room
-        if (worldData.currentRoom != null)
-            GameEvents.instance.TriggerOnExitRoom(worldData.currentRoom);
+        if (worldData.playerData.roomData != null)
+            GameEvents.instance.TriggerOnExitRoom(worldData.playerData.roomData);
 
         // Check if room was already discovered
         if (!roomData.isDiscovered)
             roomData.isDiscovered = true;
 
         // Enter room
-        worldData.currentRoom = roomData;
+        worldData.playerData.roomData = roomData;
         GameEvents.instance.TriggerOnEnterRoom(roomData);
     }
 
@@ -73,4 +74,17 @@ public class GameManager : MonoBehaviour
         // Load new level
         TransitionManager.instance.ReloadScene();
     }
+
+    #region Helpers
+
+    private void InitializeSpawners()
+    {
+        FollowerSpawnerHandler[] handlers = (FollowerSpawnerHandler[])FindObjectsOfType(typeof(FollowerSpawnerHandler));
+        foreach (var handler in handlers)
+        {
+            handler.Initialize(worldData.playerData.roomData);
+        }
+    }
+
+    #endregion
 }

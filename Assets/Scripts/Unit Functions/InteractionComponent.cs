@@ -2,17 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInteraction : MonoBehaviour
+[RequireComponent(typeof(Collider2D))]
+public class InteractionComponent : MonoBehaviour
 {
-    [Header("References")]
-    [SerializeField] private Collider2D collider2d;
-
     private IFollower follower;
-    private List<IFollower> heldFollowers;
-
     private ISpawner spawner;
-
     private IBarrier barrier;
+
+    private List<IFollower> heldFollowers;
 
     private void Awake()
     {
@@ -72,12 +69,12 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
-    public void HandleInteractions()
+    public void HandleInteractions(UnitData unitData)
     {
         // If you are currently able to interact, then recruit them
         if (follower != null)
         {
-            follower.Follow(transform);
+            follower.Follow(unitData);
             heldFollowers.Add(follower);
         }
         // Else release all recruits

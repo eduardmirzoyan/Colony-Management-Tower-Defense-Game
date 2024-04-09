@@ -149,7 +149,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 1336532845, guid: 459bc79938a83a84fb09a7290db9f0a1, type: 3}
+  m_Sprite: {fileID: -589022245, guid: bca8cc3cc2212cb4f9089c0dabce908b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -159,7 +159,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!1 &2125321375642425096
 GameObject:
   m_ObjectHideFlags: 0
@@ -235,7 +235,7 @@ GameObject:
   - component: {fileID: 6262333814002432091}
   - component: {fileID: 2125321376028431228}
   m_Layer: 10
-  m_Name: Swordsman
+  m_Name: Archer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -328,7 +328,7 @@ Animator:
   m_GameObject: {fileID: 2125321376028431216}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 3a4280b6ca5ab7645b255b8f0f75007a, type: 2}
+  m_Controller: {fileID: 9100000, guid: 2dbb448232da42d438e88a4b16c46382, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -367,7 +367,8 @@ MonoBehaviour:
   agent: {fileID: 2125321376028431229}
   hoverIcon: {fileID: 2125321374186859773}
   animationHandler: {fileID: 6262333814002432091}
-  target: {fileID: 0}
+  unitData: {fileID: 0}
+  leader: {fileID: 0}
   printLogs: 1
 --- !u!1 &4269710481095850862
 GameObject:
@@ -442,8 +443,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -1
-  m_Sprite: {fileID: 21300000, guid: 1eedf06b25398044ab119918d3200f52, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 0ee38b43f3a648c4c927a1cc84d87f37, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.5019608}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -452,4 +453,4 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1

@@ -675,7 +675,6 @@ GameObject:
   - component: {fileID: 519420029}
   - component: {fileID: 519420035}
   - component: {fileID: 519420034}
-  - component: {fileID: 519420036}
   - component: {fileID: 519420037}
   - component: {fileID: 519420038}
   m_Layer: 0
@@ -824,18 +823,6 @@ MonoBehaviour:
         m_Calls: []
   m_LegacyBlendHint: 0
   m_ComponentOwner: {fileID: 2030683049}
---- !u!114 &519420036
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 519420028}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a8a05de0ac134f4f9d01bef6b9da077, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &519420037
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1223,6 +1210,7 @@ MonoBehaviour:
   archerGenPrefab: {fileID: 1806908513219349806, guid: f7fae248d4bf707429f2b932a5500ee9, type: 3}
   enemyGenPrefab: {fileID: 2472299648617476699, guid: 558d7a09220243a41a7fd48d1da39904, type: 3}
   finishMarkerPrefab: {fileID: 2472299648617476699, guid: 3acc5246c051bd64bbe5360caaa68d52, type: 3}
+  playerData: {fileID: 11400000, guid: 3a007b00dfdd65643998867349222aff, type: 2}
   gridWidth: 10
   gridHeight: 10
   roomWidth: 10
@@ -1372,12 +1360,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldData:
     rooms: []
-    currentRoom:
-      gridPosition: {x: 0, y: 0}
-      size: 0
-      worldPosition: {x: 0, y: 0}
-      roomType: 0
-      isDiscovered: 0
+    playerData: {fileID: 0}
 --- !u!1 &1907907037
 GameObject:
   m_ObjectHideFlags: 0

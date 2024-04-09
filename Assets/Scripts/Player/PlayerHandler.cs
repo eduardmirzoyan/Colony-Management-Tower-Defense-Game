@@ -3,22 +3,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Movement), typeof(AnimationHandler))]
+[RequireComponent(typeof(MovementComponent), typeof(AnimationComponent), typeof(InteractionComponent))]
 public class PlayerHandler : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private Movement movement;
-    [SerializeField] private AnimationHandler animationHandler;
-    [SerializeField] private PlayerInteraction interaction;
+    [SerializeField] private MovementComponent movement;
+    [SerializeField] private AnimationComponent animationn;
+    [SerializeField] private InteractionComponent interaction;
+
+    [Header("Data")]
+    [SerializeField, ReadOnly] private UnitData unitData;
 
     [Header("Settings")]
     [SerializeField] private KeyCode interactKey;
+
+    public void Initialize(UnitData unitData)
+    {
+        this.unitData = unitData;
+    }
 
     private void Update()
     {
         HandleMovementInput();
         HandleInteractInput();
-        HanldeAnimation();
+        HandleAnimation();
     }
 
     private void HandleMovementInput()
@@ -37,12 +45,12 @@ public class PlayerHandler : MonoBehaviour
     {
         if (Input.GetKeyDown(interactKey))
         {
-            interaction.HandleInteractions();
+            interaction.HandleInteractions(unitData);
         }
     }
 
-    private void HanldeAnimation()
+    private void HandleAnimation()
     {
-        animationHandler.HandleAnimation(movement.Velocity);
+        animationn.HandleAnimation(movement.Velocity);
     }
 }
