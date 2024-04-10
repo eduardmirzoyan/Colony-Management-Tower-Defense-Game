@@ -13,7 +13,7 @@ public class AnimationComponent : MonoBehaviour
         animator.Play("Idle");
     }
 
-    public void HandleAnimation(Vector2 velocity)
+    public void Movement(Vector2 velocity)
     {
         if (velocity.magnitude > 0.1f)
         {
@@ -24,6 +24,16 @@ public class AnimationComponent : MonoBehaviour
         {
             animator.Play("Idle");
         }
+    }
+
+    public void Attack()
+    {
+        animator.Play("Attack");
+    }
+
+    public void Die()
+    {
+        animator.Play("Die");
     }
 
     private void FlipModel(Vector3 direction)

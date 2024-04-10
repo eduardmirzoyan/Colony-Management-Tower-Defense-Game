@@ -1361,6 +1361,7 @@ MonoBehaviour:
   worldData:
     rooms: []
     playerData: {fileID: 0}
+  enemySpawners: []
 --- !u!1 &1907907037
 GameObject:
   m_ObjectHideFlags: 0

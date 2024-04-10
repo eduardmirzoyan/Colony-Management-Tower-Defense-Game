@@ -6,6 +6,9 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private WorldData worldData;
 
+    [SerializeField]
+    private EnemySpawnerHandler[] enemySpawners;
+
     public static GameManager instance;
     private void Awake()
     {
@@ -75,14 +78,44 @@ public class GameManager : MonoBehaviour
         TransitionManager.instance.ReloadScene();
     }
 
+    public void AttackUnit(UnitData attacker, UnitData victim)
+    {
+        victim.currentHP -= attacker.attackDamage;
+        if (victim.currentHP < 0) victim.currentHP = 0;
+    }
+
+    // TESTING
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            SpawnEnemy();
+        }
+    }
+
     #region Helpers
 
     private void InitializeSpawners()
     {
-        FollowerSpawnerHandler[] handlers = (FollowerSpawnerHandler[])FindObjectsOfType(typeof(FollowerSpawnerHandler));
-        foreach (var handler in handlers)
+        FollowerSpawnerHandler[] followerSpawners = (FollowerSpawnerHandler[])FindObjectsOfType(typeof(FollowerSpawnerHandler));
+        foreach (var spawner in followerSpawners)
         {
-            handler.Initialize(worldData.playerData.roomData);
+            spawner.Initialize(worldData.playerData.roomData);
+        }
+
+        enemySpawners = (EnemySpawnerHandler[])FindObjectsOfType(typeof(EnemySpawnerHandler));
+        foreach (var spawner in enemySpawners)
+        {
+            spawner.Initialize(worldData.playerData.roomData, worldData);
+        }
+    }
+
+    private void SpawnEnemy()
+    {
+        foreach (var spawner in enemySpawners)
+        {
+            spawner.Spawn();
+            break;
         }
     }
 

@@ -28,6 +28,16 @@ public class GameEvents : MonoBehaviour
 
     #endregion
 
+    #region Combat
+
+    public event Action<UnitData> OnUnitTakeDamage;
+    public event Action<UnitData> OnUnitDie;
+
+    public void TriggerOnUnitTakeDamage(UnitData unitData) => OnUnitTakeDamage?.Invoke(unitData);
+    public void TriggerOnUnitDie(UnitData unitData) => OnUnitDie?.Invoke(unitData);
+
+    #endregion
+
     #region Spawners
 
     public event Action<ISpawner> OnEnterSpawner;

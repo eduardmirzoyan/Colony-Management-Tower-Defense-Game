@@ -51,6 +51,6 @@ public class PlayerHandler : MonoBehaviour
 
     private void HandleAnimation()
     {
-        animationn.HandleAnimation(movement.Velocity);
+        animationn.Movement(movement.Velocity);
     }
 }

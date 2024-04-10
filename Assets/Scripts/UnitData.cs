@@ -6,9 +6,17 @@ using UnityEngine;
 public class UnitData : ScriptableObject
 {
     public new string name;
+
+    [Header("Combat Stats")]
     public int currentHP;
     public int maxHP;
+    public float aggroRange;
+    public float attackRange;
+    public float attackSpeed;
+    public int attackDamage;
+    public float moveSpeed;
 
+    public bool IsDead { get { return currentHP <= 0; } }
 
     /// <summary>
     /// The transform of unit in real world.
