@@ -2,22 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UI;
 
 [RequireComponent(typeof(NavMeshAgent))]
 public abstract class FollowerHandler : MonoBehaviour, IFollower
 {
     private enum FollowerState { Idle, Guarding, Following, Aggravated, Attacking, Dying }
+    private enum Intent { Select, Follow, Defend, Attack }
 
     [Header("References")]
     [SerializeField] private NavMeshAgent agent;
-    [SerializeField] private Image hoverIcon;
+    [SerializeField] private SpriteRenderer intentIcon;
     [SerializeField] private AnimationComponent animationn;
     [SerializeField] private DamageFlash damageFlash;
     [SerializeField] private LayerMask enemyLayer;
+    [SerializeField] private Sprite[] intentSprites;
 
     [Header("Data")]
     [SerializeField, ReadOnly] private UnitData unitData;
+    [SerializeField] private float intentDuration;
 
     [Header("Debug")]
     [SerializeField, ReadOnly] private UnitData leader;
@@ -31,7 +33,9 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
     {
         this.unitData = unitData;
 
+        StartCoroutine(ShowIntent(Intent.Defend, intentDuration));
         state = FollowerState.Guarding;
+        intentIcon.sprite = null;
 
         gameObject.name = unitData.ToString();
     }
@@ -56,6 +60,7 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
         agent.updateRotation = false;
         agent.updateUpAxis = false;
         agent.avoidancePriority = Random.Range(0, 1000);
+        intentIcon.sprite = null;
     }
 
     private void Start()
@@ -80,11 +85,23 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
         {
             case FollowerState.Guarding:
 
-                FollowLeader();
+                agent.SetDestination(unitData.roomData.worldPosition);
+                animationn.Movement(agent.velocity);
+
+                if (leader != null)
+                {
+                    StopAllCoroutines();
+                    StartCoroutine(ShowIntent(Intent.Follow, intentDuration));
+
+                    state = FollowerState.Following;
+                }
 
                 bool found = SearchForTarget();
                 if (found)
                 {
+                    StopAllCoroutines();
+                    StartCoroutine(ShowIntent(Intent.Attack, intentDuration));
+
                     attackTimer = unitData.attackSpeed;
                     state = FollowerState.Aggravated;
                 }
@@ -92,7 +109,17 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
                 break;
             case FollowerState.Following:
 
-                // TODO?
+                if (leader == null)
+                {
+                    StopAllCoroutines();
+                    StartCoroutine(ShowIntent(Intent.Defend, intentDuration));
+
+                    state = FollowerState.Guarding;
+                    return;
+                }
+
+                agent.SetDestination(leader.transform.position);
+                animationn.Movement(agent.velocity);
 
                 break;
             case FollowerState.Aggravated:
@@ -180,6 +207,29 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
         return false;
     }
 
+    private IEnumerator ShowIntent(Intent intent, float duration)
+    {
+        intentIcon.sprite = intentSprites[(int)intent];
+        intentIcon.color = Color.white;
+
+        // Hold
+        yield return new WaitForSeconds(duration);
+
+        // Fade out
+        float elapsed = 0;
+        while (elapsed < 0.5f)
+        {
+            // Lerp color
+            intentIcon.color = Color.Lerp(Color.white, Color.clear, elapsed / duration);
+
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        intentIcon.sprite = null;
+        intentIcon.color = Color.white;
+    }
+
     #endregion
 
     #region Events
@@ -187,15 +237,15 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
     private void EventEnterFollow(IFollower follower)
     {
         if (follower.Equals(this))
-            hoverIcon.enabled = true;
+            intentIcon.sprite = intentSprites[(int)Intent.Select];
         else
-            hoverIcon.enabled = false;
+            intentIcon.sprite = null;
     }
 
     private void EventExitFollow(IFollower follower)
     {
         if (follower.Equals(this))
-            hoverIcon.enabled = false;
+            intentIcon.sprite = null;
     }
 
     public void EventTakeDamage(UnitData unitData)
