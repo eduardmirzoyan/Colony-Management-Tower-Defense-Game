@@ -78,12 +78,6 @@ public class GameManager : MonoBehaviour
         TransitionManager.instance.ReloadScene();
     }
 
-    public void AttackUnit(UnitData attacker, UnitData victim)
-    {
-        victim.currentHP -= attacker.attackDamage;
-        if (victim.currentHP < 0) victim.currentHP = 0;
-    }
-
     // TESTING
     private void Update()
     {

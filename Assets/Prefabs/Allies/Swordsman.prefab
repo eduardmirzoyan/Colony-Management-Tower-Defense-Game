@@ -233,6 +233,7 @@ GameObject:
   - component: {fileID: 2125321376028431230}
   - component: {fileID: 3980545961720941397}
   - component: {fileID: 6262333814002432091}
+  - component: {fileID: 6914736219461162663}
   - component: {fileID: 2125321376028431228}
   m_Layer: 10
   m_Name: Swordsman
@@ -315,9 +316,9 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.35}
-  m_Size: {x: 0.5, y: 1}
-  m_Direction: 0
+  m_Offset: {x: 0, y: 0.1}
+  m_Size: {x: 1, y: 0.25}
+  m_Direction: 1
 --- !u!95 &3980545961720941397
 Animator:
   serializedVersion: 4
@@ -352,6 +353,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 3980545961720941397}
   isFacingRight: 0
+--- !u!114 &6914736219461162663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2125321376028431216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f767e0b46f44a2749a5e3dc125c78385, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashMaterial: {fileID: 2100000, guid: 9c6a8bb72a259044391a9eb107c9a02c, type: 2}
+  duration: 0.1
 --- !u!114 &2125321376028431228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -367,6 +382,7 @@ MonoBehaviour:
   agent: {fileID: 2125321376028431229}
   hoverIcon: {fileID: 2125321374186859773}
   animationn: {fileID: 6262333814002432091}
+  damageFlash: {fileID: 6914736219461162663}
   enemyLayer:
     serializedVersion: 2
     m_Bits: 8192

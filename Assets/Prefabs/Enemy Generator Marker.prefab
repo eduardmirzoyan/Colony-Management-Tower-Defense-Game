@@ -141,7 +141,7 @@ MonoBehaviour:
     worldPosition: {x: 0, y: 0}
     roomType: 0
     isDiscovered: 0
-  unitData: {fileID: 11400000, guid: 0ab3d074fb1b9aa48b00eaf00ad4402e, type: 2}
+  unitData: {fileID: 11400000, guid: cbf5e9178d01a7748ae2afe2043b31c0, type: 2}
 --- !u!1 &5612941638328396618
 GameObject:
   m_ObjectHideFlags: 0

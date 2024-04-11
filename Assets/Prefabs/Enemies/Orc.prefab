@@ -192,10 +192,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agent: {fileID: 1720789242890485082}
   animationn: {fileID: 7592660941833099622}
+  damageFlash: {fileID: 0}
+  allyLayer:
+    serializedVersion: 2
+    m_Bits: 0
   unitData: {fileID: 0}
   player: {fileID: 0}
   target: {fileID: 0}
   state: 0
+  attackTimer: 0
   printLogs: 0
 --- !u!61 &2880007059348694754
 BoxCollider2D:
@@ -297,7 +302,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: 0ee38b43f3a648c4c927a1cc84d87f37, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.5019608}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

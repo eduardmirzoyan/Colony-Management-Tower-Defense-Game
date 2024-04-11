@@ -7,12 +7,13 @@ using UnityEngine.UI;
 [RequireComponent(typeof(NavMeshAgent))]
 public abstract class FollowerHandler : MonoBehaviour, IFollower
 {
-    private enum FollowerState { Idle, Guarding, Following, Attacking, Dying }
+    private enum FollowerState { Idle, Guarding, Following, Aggravated, Attacking, Dying }
 
     [Header("References")]
     [SerializeField] private NavMeshAgent agent;
     [SerializeField] private Image hoverIcon;
     [SerializeField] private AnimationComponent animationn;
+    [SerializeField] private DamageFlash damageFlash;
     [SerializeField] private LayerMask enemyLayer;
 
     [Header("Data")]
@@ -85,7 +86,7 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
                 if (found)
                 {
                     attackTimer = unitData.attackSpeed;
-                    state = FollowerState.Attacking;
+                    state = FollowerState.Aggravated;
                 }
 
                 break;
@@ -94,13 +95,28 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
                 // TODO?
 
                 break;
-            case FollowerState.Attacking:
+            case FollowerState.Aggravated:
 
-                AttackTarget();
-                if (target == null || target.IsDead)
+                bool attacked = ChaseAndAttackTarget();
+
+                if (attacked)
+                {
+                    state = FollowerState.Attacking;
+                }
+                else if (target == null || target.IsDead)
                 {
                     target = null;
                     state = FollowerState.Guarding;
+                }
+
+                break;
+            case FollowerState.Attacking:
+
+                // Wait until animation is over
+                if (animationn.CurrentAnimationOver())
+                {
+                    attackTimer = unitData.attackSpeed;
+                    state = target.IsDead ? FollowerState.Guarding : FollowerState.Aggravated;
                 }
 
                 break;
@@ -137,7 +153,7 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
         return false;
     }
 
-    private void AttackTarget()
+    private bool ChaseAndAttackTarget()
     {
         if (Vector2.Distance(transform.position, target.transform.position) > unitData.attackRange)
         {
@@ -149,19 +165,19 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
         {
             if (attackTimer <= 0)
             {
-                print("attack!");
-
-                GameManager.instance.AttackUnit(unitData, target);
+                GameLogic.AttackUnit(unitData, target);
 
                 animationn.Attack();
-
-                attackTimer = unitData.attackSpeed;
+                return true;
             }
             else
             {
+                animationn.Movement(agent.velocity);
                 attackTimer -= Time.deltaTime;
             }
         }
+
+        return false;
     }
 
     #endregion
@@ -184,12 +200,20 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
 
     public void EventTakeDamage(UnitData unitData)
     {
-        // TODO
+        if (this.unitData != unitData) return;
+
+        damageFlash.Flash();
     }
 
     public void EventDie(UnitData unitData)
     {
-        // TODO
+        if (this.unitData != unitData) return;
+
+        agent.isStopped = true;
+        animationn.Die();
+
+        Destroy(gameObject, 2f);
+        state = FollowerState.Dying;
     }
 
     #endregion

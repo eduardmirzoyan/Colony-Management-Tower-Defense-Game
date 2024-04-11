@@ -315,9 +315,9 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.35}
-  m_Size: {x: 0.5, y: 1}
-  m_Direction: 0
+  m_Offset: {x: 0, y: 0.1}
+  m_Size: {x: 1, y: 0.25}
+  m_Direction: 1
 --- !u!95 &3980545961720941397
 Animator:
   serializedVersion: 4
@@ -367,9 +367,15 @@ MonoBehaviour:
   agent: {fileID: 2125321376028431229}
   hoverIcon: {fileID: 2125321374186859773}
   animationn: {fileID: 6262333814002432091}
+  damageFlash: {fileID: 0}
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 0
   unitData: {fileID: 0}
   leader: {fileID: 0}
-  printLogs: 1
+  target: {fileID: 0}
+  state: 0
+  attackTimer: 0
 --- !u!1 &4269710481095850862
 GameObject:
   m_ObjectHideFlags: 0

@@ -36,6 +36,8 @@ public class AnimationComponent : MonoBehaviour
         animator.Play("Die");
     }
 
+    public bool CurrentAnimationOver() => animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.95f;
+
     private void FlipModel(Vector3 direction)
     {
         // If you are moving right and facing left, then flip

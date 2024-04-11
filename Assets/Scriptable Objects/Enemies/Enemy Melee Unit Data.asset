@@ -15,6 +15,11 @@ MonoBehaviour:
   name: Goblin
   currentHP: 2
   maxHP: 2
+  aggroRange: 4
+  attackRange: 1
+  attackSpeed: 2
+  attackDamage: 1
+  moveSpeed: 0
   transform: {fileID: 0}
   roomData:
     gridPosition: {x: 0, y: 0}

@@ -70,7 +70,7 @@ public class IssacRoomGeneration
         // Queue of rooms to expand from
         Queue<Vector2Int> roomQueue;
 
-        // 0 == Empty | 1 == Room
+        // 0 == Empty | 1 == Room || 2 == Start
         int[,] grid;
 
         // Number of rooms to carve out
@@ -89,7 +89,7 @@ public class IssacRoomGeneration
             // Recurisvely generate grid
             BFS(roomQueue, grid, ref numRoomsLeft);
 
-        } while (numRoomsLeft != 0);
+        } while (numRoomsLeft > 0);
 
         return grid;
     }
@@ -120,7 +120,7 @@ public class IssacRoomGeneration
 
     private static Vector2Int[] GetValidNeighbors(Vector2Int location, int[,] grid)
     {
-        List<Vector2Int> validNeighbors = new List<Vector2Int>();
+        List<Vector2Int> validNeighbors = new();
 
         foreach (var direction in DIRECTIONS)
         {
@@ -132,19 +132,31 @@ public class IssacRoomGeneration
                 continue;
             }
 
-            bool validNeighbor = true;
-            foreach (var neighborDirection in DIRECTIONS)
+            // If neighbor is already taken, then skip
+            if (grid[newLocation.x, newLocation.y] > 0)
             {
-                var newNewLocation = newLocation + neighborDirection;
+                continue;
+            }
 
-                // Skip if out of bounds or same as start
-                if (OutOfBounds(newNewLocation, grid) || newNewLocation == location)
+            bool validNeighbor = true;
+            foreach (var newDirection in DIRECTIONS)
+            {
+                var newNewLocation = newLocation + newDirection;
+
+                // Skip if out of bounds
+                if (OutOfBounds(newNewLocation, grid))
                 {
                     continue;
                 }
 
-                // If neighbor has another neighbor that isn't original
-                if (grid[newNewLocation.x, newNewLocation.y] != 0)
+                // If same as start, then we cool
+                if (newNewLocation == location)
+                {
+                    continue;
+                }
+
+                // If neighbor is non-empty
+                if (grid[newNewLocation.x, newNewLocation.y] > 0)
                 {
                     // Then invalid location
                     validNeighbor = false;

@@ -95,9 +95,10 @@ GameObject:
   - component: {fileID: 366731002334601988}
   - component: {fileID: 8612868023410088401}
   - component: {fileID: 7256749752048433348}
+  - component: {fileID: 4293483131746977398}
   - component: {fileID: -7346827678835729160}
+  - component: {fileID: 5294702892664759745}
   - component: {fileID: 1152123583779833556}
-  - component: {fileID: 6098868857954657148}
   m_Layer: 13
   m_Name: Goblin
   m_TagString: Untagged
@@ -164,6 +165,22 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!70 &4293483131746977398
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 366731002334601991}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 6200000, guid: 1ec8cad6766adaf4b8e9ba2016d36005, type: 2}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0.1}
+  m_Size: {x: 1, y: 0.25}
+  m_Direction: 1
 --- !u!114 &-7346827678835729160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -178,6 +195,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 8612868023410088401}
   isFacingRight: 0
+--- !u!114 &5294702892664759745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 366731002334601991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f767e0b46f44a2749a5e3dc125c78385, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashMaterial: {fileID: 2100000, guid: 9c6a8bb72a259044391a9eb107c9a02c, type: 2}
+  duration: 0.1
 --- !u!114 &1152123583779833556
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -192,36 +223,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agent: {fileID: 7256749752048433348}
   animationn: {fileID: -7346827678835729160}
+  damageFlash: {fileID: 5294702892664759745}
+  allyLayer:
+    serializedVersion: 2
+    m_Bits: 1024
   unitData: {fileID: 0}
   player: {fileID: 0}
   target: {fileID: 0}
+  state: 0
+  attackTimer: 0
   printLogs: 0
---- !u!61 &6098868857954657148
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 366731002334601991}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 6200000, guid: 1ec8cad6766adaf4b8e9ba2016d36005, type: 2}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.25}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.25, y: 0.25}
-  m_EdgeRadius: 0
 --- !u!1 &366731002654704076
 GameObject:
   m_ObjectHideFlags: 0
@@ -296,7 +307,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: 0ee38b43f3a648c4c927a1cc84d87f37, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.5019608}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
