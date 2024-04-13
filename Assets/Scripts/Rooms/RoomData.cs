@@ -9,7 +9,7 @@ public class RoomData
 {
     public Vector2Int gridPosition;
     public int size;
-    public Vector2 worldPosition;
+    public Vector3 worldPosition;
     public RoomType roomType;
     public bool isDiscovered;
     public readonly List<RoomData> adjacents;

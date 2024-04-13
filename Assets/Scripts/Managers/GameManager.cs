@@ -26,7 +26,6 @@ public class GameManager : MonoBehaviour
         }
 
         instance = this;
-        waveData = null;
     }
 
     private void Start()
@@ -37,6 +36,7 @@ public class GameManager : MonoBehaviour
         WorldManager.instance.GenerateWorld(out worldData);
         SpawnManager.instance.Initialize(worldData);
         InitializeSpawners();
+        waveData = null;
 
         StartCoroutine(DelayedStart());
     }

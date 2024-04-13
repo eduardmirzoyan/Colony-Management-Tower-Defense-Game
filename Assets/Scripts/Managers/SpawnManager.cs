@@ -43,7 +43,7 @@ public class SpawnManager : MonoBehaviour
     public void SpawnEnemy(UnitData unitData, RoomData roomData)
     {
         UnitData copy = unitData.Copy();
-        Vector3 spawnPosition = (Vector3)roomData.worldPosition;
+        Vector3 spawnPosition = roomData.worldPosition;
         var enemyHandler = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity).GetComponent<EnemyHandler>();
         copy.Initialize(enemyHandler.transform, roomData);
 

@@ -10,7 +10,7 @@ public class BarrierHandler : MonoBehaviour, IBarrier
     {
         this.roomData = roomData;
 
-        transform.position = roomData.worldPosition + direction * (roomData.size / 2 + 0.5f);
+        transform.position = roomData.worldPosition + (Vector3)direction * (roomData.size / 2 + 0.5f);
     }
 
     public void Raise()
