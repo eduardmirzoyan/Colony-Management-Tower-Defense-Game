@@ -9,7 +9,6 @@ public class GameManager : MonoBehaviour
 
     [Header("Debug")]
     [SerializeField] private WorldData worldData;
-    [SerializeField] private EnemySpawnerHandler[] enemySpawners;
     [SerializeField] private GameState gameState;
     [SerializeField] private float spawnDelay;
     [SerializeField] private int spawnMultiplier;
@@ -36,7 +35,7 @@ public class GameManager : MonoBehaviour
 
         // Initialize world
         WorldManager.instance.GenerateWorld(out worldData);
-        EnemyManager.instance.Initialize(worldData.playerData);
+        SpawnManager.instance.Initialize(worldData);
         InitializeSpawners();
 
         StartCoroutine(DelayedStart());
@@ -81,6 +80,12 @@ public class GameManager : MonoBehaviour
 
         // Calculate wave
         SetupWave(out waveData);
+        if (waveData is null)
+        {
+            // Finish wave
+            // CompleteWave();
+            // return;
+        }
 
         // Now player needs to prepare for wave
         gameState = GameState.Prepare;
@@ -129,10 +134,19 @@ public class GameManager : MonoBehaviour
         GameEvents.instance.TriggerOnStateExpand();
     }
 
-    public void ExitMap()
+    public void GameWin()
     {
         // Win game!
         print("You win!");
+
+        // Load new level
+        TransitionManager.instance.ReloadScene();
+    }
+
+    public void GameLose()
+    {
+        // Win game!
+        print("You Lose!");
 
         // Load new level
         TransitionManager.instance.ReloadScene();
@@ -144,7 +158,8 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.G))
         {
             //SpawnEnemy();
-            worldData.Trace();
+            // worldData.Trace();
+            EnemyManager.instance.Spawn(worldData.rooms[0]);
         }
     }
 
@@ -156,21 +171,6 @@ public class GameManager : MonoBehaviour
         foreach (var spawner in followerSpawners)
         {
             spawner.Initialize(worldData.playerData.roomData);
-        }
-
-        enemySpawners = (EnemySpawnerHandler[])FindObjectsOfType(typeof(EnemySpawnerHandler));
-        foreach (var spawner in enemySpawners)
-        {
-            spawner.Initialize(worldData.playerData.roomData, worldData);
-        }
-    }
-
-    private void SpawnEnemy()
-    {
-        foreach (var spawner in enemySpawners)
-        {
-            spawner.Spawn();
-            break;
         }
     }
 
@@ -204,7 +204,7 @@ public class GameManager : MonoBehaviour
         if (spawnRoomTable.Count == 0)
         {
             print("No valid rooms, no enemies will spawn...");
-            waveData = new WaveData(0, spawnRoomTable);
+            waveData = null;
             return;
         }
 

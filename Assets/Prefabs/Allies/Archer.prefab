@@ -350,6 +350,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   intentSprites: []
+  corpsePrefab: {fileID: 5152117498362879592, guid: d56d0ffb93ac4d34d9294ceeb7224c69, type: 3}
   unitData: {fileID: 0}
   intentDuration: 0
   leader: {fileID: 0}

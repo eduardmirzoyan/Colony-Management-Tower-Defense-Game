@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface ISpawner
 {
-    public abstract void Spawn();
+    public abstract void Spawn(UnitData unitData);
 }

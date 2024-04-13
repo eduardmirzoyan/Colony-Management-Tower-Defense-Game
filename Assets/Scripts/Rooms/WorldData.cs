@@ -6,7 +6,9 @@ using UnityEngine;
 public class WorldData
 {
     public List<RoomData> rooms;
+    public UnitData baseData;
     public UnitData playerData;
+
     public int NumDiscoveredRooms
     {
         get
@@ -31,6 +33,11 @@ public class WorldData
     public void AssignPlayer(UnitData playerData)
     {
         this.playerData = playerData;
+    }
+
+    public void AssignBase(UnitData baseData)
+    {
+        this.baseData = baseData;
     }
 
     public void AddRoom(RoomData room)

@@ -29,6 +29,7 @@ public class WorldManager : MonoBehaviour
 
     [Header("Data")]
     [SerializeField] private UnitData playerData;
+    [SerializeField] private UnitData baseData;
 
     [Header("Settings")]
     [SerializeField] private int gridWidth;
@@ -205,7 +206,21 @@ public class WorldManager : MonoBehaviour
     {
         // Spawn base in the middle of room
         Vector3 center = new(i * roomWidth + roomWidth / 2, j * roomHeight + roomHeight / 2);
-        Instantiate(basePrefab, center, Quaternion.identity, markersParent);
+        var baseHandler = Instantiate(basePrefab, center, Quaternion.identity, markersParent).GetComponent<BaseHandler>();
+        var copy = baseData.Copy();
+        copy.Initialize(baseHandler.transform, startRoom);
+        baseHandler.Initialize(copy);
+        worldData.AssignBase(copy);
+
+
+        // Spawn player in bottom middle of room
+        Vector3 bottomMiddle = new(center.x, center.y - roomHeight / 4);
+        var playerHandler = Instantiate(playerPrefab, bottomMiddle, Quaternion.identity, followersParent).GetComponent<PlayerHandler>();
+        copy = playerData.Copy();
+        copy.Initialize(playerHandler.transform, startRoom);
+        playerHandler.Initialize(copy);
+        worldData.AssignPlayer(copy);
+
 
         // Spawn swordsman generator in top left corner
         Vector3 topLeft = new(center.x - roomWidth / 4, center.y + roomHeight / 4);
@@ -214,14 +229,6 @@ public class WorldManager : MonoBehaviour
         // Spawn archer generator in top right corner
         Vector3 topRight = new(center.x + roomWidth / 4, center.y + roomHeight / 4);
         Instantiate(archerGenPrefab, topRight, Quaternion.identity, markersParent);
-
-        // Spawn player in bottom middle of room
-        Vector3 bottomMiddle = new(center.x, center.y - roomHeight / 4);
-        var playerHandler = Instantiate(playerPrefab, bottomMiddle, Quaternion.identity, followersParent).GetComponent<PlayerHandler>();
-        var copy = playerData.Copy();
-        copy.Initialize(playerHandler.transform, startRoom);
-        playerHandler.Initialize(copy);
-        worldData.AssignPlayer(copy);
     }
 
     private void InstantiateNestRoom(int i, int j)

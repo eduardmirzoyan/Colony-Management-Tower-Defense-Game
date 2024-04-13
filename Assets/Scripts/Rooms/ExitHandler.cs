@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class ExitHandler : MonoBehaviour, ISpawner
 {
-    public void Spawn()
+    public void Spawn(UnitData _)
     {
-        GameManager.instance.ExitMap();
+        GameManager.instance.GameWin();
     }
 }

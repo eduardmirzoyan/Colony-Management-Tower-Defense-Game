@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -9,7 +10,7 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyHandler : MonoBehaviour
 {
-    private enum EnemyState { Chasing, Aggravated, Attacking, Dying }
+    private enum EnemyState { Chasing, Aggravated, Attacking }
 
     [Header("References")]
     [SerializeField] private NavMeshAgent agent;
@@ -17,12 +18,13 @@ public class EnemyHandler : MonoBehaviour
     [SerializeField] private DamageFlash damageFlash;
     [SerializeField] private LayerMask allyLayer;
     [SerializeField] private GameObject goldDropPrefab;
+    [SerializeField] private GameObject corpsePrefab;
 
     [Header("Data")]
     [SerializeField, ReadOnly] private UnitData unitData;
 
     [Header("Debug")]
-    [SerializeField, ReadOnly] private UnitData player;
+    [SerializeField, ReadOnly] private UnitData baseData;
     [SerializeField, ReadOnly] private UnitData target;
     [SerializeField, ReadOnly] private EnemyState state;
     [SerializeField, ReadOnly] private float attackTimer;
@@ -30,10 +32,10 @@ public class EnemyHandler : MonoBehaviour
 
     public UnitData UnitData { get { return unitData; } }
 
-    public void Initialize(UnitData unitData, UnitData player)
+    public void Initialize(UnitData unitData, UnitData baseData)
     {
         this.unitData = unitData;
-        this.player = player;
+        this.baseData = baseData;
         state = EnemyState.Chasing;
 
         gameObject.name = unitData.ToString();
@@ -65,7 +67,14 @@ public class EnemyHandler : MonoBehaviour
         {
             case EnemyState.Chasing:
 
-                ChasePlayer();
+                GoToBase();
+
+                bool near = NearBase();
+                if (near)
+                {
+                    attackTimer = unitData.attackSpeed;
+                    state = EnemyState.Aggravated;
+                }
 
                 bool found = SearchForTarget();
                 if (found)
@@ -82,7 +91,7 @@ public class EnemyHandler : MonoBehaviour
                 {
                     state = EnemyState.Attacking;
                 }
-                else if (target == null || target.IsDead)
+                else if (target.transform == null)
                 {
                     target = null;
                     state = EnemyState.Chasing;
@@ -95,12 +104,9 @@ public class EnemyHandler : MonoBehaviour
                 if (animationn.CurrentAnimationOver())
                 {
                     attackTimer = unitData.attackSpeed;
-                    state = target.IsDead ? EnemyState.Chasing : EnemyState.Aggravated;
+                    state = target.transform == null ? EnemyState.Chasing : EnemyState.Aggravated;
                 }
 
-                break;
-            case EnemyState.Dying:
-                // Do nothing until gone...
                 break;
         }
     }
@@ -110,7 +116,7 @@ public class EnemyHandler : MonoBehaviour
     private bool SearchForTarget()
     {
         var hit = Physics2D.OverlapCircle(transform.position, unitData.aggroRange, allyLayer);
-        if (hit && hit.gameObject.TryGetComponent(out FollowerHandler followerHandler) && !followerHandler.UnitData.IsDead)
+        if (hit && hit.gameObject.TryGetComponent(out FollowerHandler followerHandler))
         {
             target = followerHandler.UnitData;
             return true;
@@ -119,11 +125,22 @@ public class EnemyHandler : MonoBehaviour
         return false;
     }
 
-    private void ChasePlayer()
+    private bool NearBase()
+    {
+        if (Vector2.Distance(transform.position, baseData.transform.position) <= unitData.attackRange)
+        {
+            target = baseData;
+            return true;
+        }
+
+        return false;
+    }
+
+    private void GoToBase()
     {
         // Chase target
-        if (player != null)
-            agent.SetDestination(player.transform.position);
+        if (baseData != null)
+            agent.SetDestination(baseData.transform.position);
         else // Go back to spawn
             agent.SetDestination(unitData.roomData.worldPosition);
 
@@ -172,19 +189,21 @@ public class EnemyHandler : MonoBehaviour
     {
         if (this.unitData != unitData) return;
 
+        // Stop moving
         agent.isStopped = true;
-        animationn.Die();
 
-        Destroy(gameObject, 2f);
-        state = EnemyState.Dying;
-
+        // Reduce wave
         GameManager.instance.WaveReduced();
 
         // Drop gold if possible
         if (unitData.goldHeld > 0)
-        {
             Instantiate(goldDropPrefab, transform.position, Quaternion.identity).GetComponent<GoldDropHandler>().Initialize(unitData.goldHeld);
-        }
+
+        // Create corpse
+        SpawnManager.instance.SpawnCorpse(unitData);
+
+        // Destroy self
+        Destroy(gameObject);
     }
 
     #endregion
@@ -198,5 +217,10 @@ public class EnemyHandler : MonoBehaviour
 
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, unitData.attackRange);
+
+        if (target == null) return;
+
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawLine(transform.position, target.transform.position);
     }
 }

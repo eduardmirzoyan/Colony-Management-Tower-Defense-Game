@@ -87,7 +87,7 @@ public class InteractionComponent : MonoBehaviour
             heldFollowers.Clear();
         }
 
-        spawner?.Spawn();
+        spawner?.Spawn(unitData);
 
         barrier?.Raise();
     }

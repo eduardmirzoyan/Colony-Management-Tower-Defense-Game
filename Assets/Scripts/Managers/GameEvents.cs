@@ -75,7 +75,9 @@ public class GameEvents : MonoBehaviour
     #region Gold
 
     public event Action OnGoldGain;
+    public event Action OnGoldLoss;
     public void TriggerOnGoldGain() => OnGoldGain?.Invoke();
+    public void TriggerOnGoldLoss() => OnGoldLoss?.Invoke();
 
     #endregion
 }

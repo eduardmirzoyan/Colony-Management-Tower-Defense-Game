@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a8f4a21fe07c9504cb169032ad89c5ae, type: 3}
-  m_Name: King Unit Data
+  m_Name: Base Data
   m_EditorClassIdentifier: 
-  name: King
-  currentHP: 1
-  maxHP: 1
+  name: Base
+  currentHP: 10
+  maxHP: 10
   aggroRange: 0
   attackRange: 0
   attackSpeed: 0
   attackDamage: 0
   moveSpeed: 0
-  goldHeld: 6
+  goldHeld: 0
   transform: {fileID: 0}
   roomData:
     gridPosition: {x: 0, y: 0}

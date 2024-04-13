@@ -234,6 +234,7 @@ MonoBehaviour:
   - {fileID: -1401941050, guid: f00e87e825a671b4686c5575b63c7f46, type: 3}
   - {fileID: 1703380495, guid: f00e87e825a671b4686c5575b63c7f46, type: 3}
   - {fileID: -1453217204, guid: f00e87e825a671b4686c5575b63c7f46, type: 3}
+  corpsePrefab: {fileID: 5152117498362879592, guid: d56d0ffb93ac4d34d9294ceeb7224c69, type: 3}
   unitData: {fileID: 0}
   intentDuration: 0.5
   leader: {fileID: 0}

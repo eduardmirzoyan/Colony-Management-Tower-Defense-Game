@@ -12,19 +12,25 @@ public class FollowerSpawnerHandler : MonoBehaviour, ISpawner
     [SerializeField] private RoomData roomData;
     [SerializeField] private UnitData unitData;
 
+    [Header("Settings")]
+    [SerializeField] private int cost;
+
     public void Initialize(RoomData roomData)
     {
         this.roomData = roomData;
     }
 
-    public void Spawn()
+    public void Spawn(UnitData player)
     {
-        UnitData copy = unitData.Copy();
-        Vector3 spawnPosition = transform.position + spawnOffset;
-        var swordsman = Instantiate(followerPrefab, spawnPosition, Quaternion.identity).GetComponent<FollowerHandler>();
-        copy.Initialize(swordsman.transform, roomData);
+        if (player.goldHeld < cost)
+            return;
 
-        swordsman.Initialize(copy);
+        // Spawn unit
+        SpawnManager.instance.SpawnAlly(unitData, roomData, transform.position + spawnOffset);
+
+        // Reduce hold
+        player.goldHeld -= cost;
+        GameEvents.instance.TriggerOnGoldLoss();
     }
 
     private void OnDrawGizmosSelected()

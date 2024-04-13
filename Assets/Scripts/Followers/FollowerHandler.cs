@@ -6,7 +6,7 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public abstract class FollowerHandler : MonoBehaviour, IFollower
 {
-    private enum FollowerState { Idle, Guarding, Following, Aggravated, Attacking, Dying }
+    private enum FollowerState { Idle, Guarding, Following, Aggravated, Attacking }
     private enum Intent { Select, Follow, Defend, Attack }
 
     [Header("References")]
@@ -16,6 +16,7 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
     [SerializeField] private DamageFlash damageFlash;
     [SerializeField] private LayerMask enemyLayer;
     [SerializeField] private Sprite[] intentSprites;
+    [SerializeField] private GameObject corpsePrefab;
 
     [Header("Data")]
     [SerializeField, ReadOnly] private UnitData unitData;
@@ -132,7 +133,7 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
                 {
                     state = FollowerState.Attacking;
                 }
-                else if (target == null || target.IsDead)
+                else if (target.transform == null)
                 {
                     target = null;
                     state = FollowerState.Guarding;
@@ -145,12 +146,9 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
                 if (animationn.CurrentAnimationOver())
                 {
                     attackTimer = unitData.attackSpeed;
-                    state = target.IsDead ? FollowerState.Guarding : FollowerState.Aggravated;
+                    state = target.transform == null ? FollowerState.Guarding : FollowerState.Aggravated;
                 }
 
-                break;
-            case FollowerState.Dying:
-                // Do nothing...
                 break;
             default:
                 print("Unimplemented state.");
@@ -160,20 +158,10 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
 
     #region Helpers
 
-    private void FollowLeader()
-    {
-        if (leader != null)
-            agent.SetDestination(leader.transform.position);
-        else // Go to center of room
-            agent.SetDestination(unitData.roomData.worldPosition);
-
-        animationn.Movement(agent.velocity);
-    }
-
     private bool SearchForTarget()
     {
         var hit = Physics2D.OverlapCircle(transform.position, unitData.aggroRange, enemyLayer);
-        if (hit && hit.gameObject.TryGetComponent(out EnemyHandler enemyHandler) && !enemyHandler.UnitData.IsDead)
+        if (hit && hit.gameObject.TryGetComponent(out EnemyHandler enemyHandler))
         {
             target = enemyHandler.UnitData;
             return true;
@@ -262,10 +250,12 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
         if (this.unitData != unitData) return;
 
         agent.isStopped = true;
-        animationn.Die();
 
-        Destroy(gameObject, 2f);
-        state = FollowerState.Dying;
+        // Create corpse
+        SpawnManager.instance.SpawnCorpse(unitData);
+
+        // Destroy self
+        Destroy(gameObject);
     }
 
     #endregion
@@ -279,5 +269,10 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
 
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, unitData.attackRange);
+
+        if (target == null) return;
+
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawLine(transform.position, target.transform.position);
     }
 }
