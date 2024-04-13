@@ -17,6 +17,8 @@ public class PlayerHandler : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private KeyCode interactKey;
 
+    public UnitData UnitData { get { return unitData; } }
+
     public void Initialize(UnitData unitData)
     {
         this.unitData = unitData;

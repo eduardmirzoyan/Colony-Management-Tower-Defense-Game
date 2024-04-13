@@ -227,6 +227,7 @@ MonoBehaviour:
   allyLayer:
     serializedVersion: 2
     m_Bits: 1024
+  goldDropPrefab: {fileID: 2345373851655924340, guid: 304367827d8096f4b9831197f4194d81, type: 3}
   unitData: {fileID: 0}
   player: {fileID: 0}
   target: {fileID: 0}

@@ -16,6 +16,7 @@ public class EnemyHandler : MonoBehaviour
     [SerializeField] private AnimationComponent animationn;
     [SerializeField] private DamageFlash damageFlash;
     [SerializeField] private LayerMask allyLayer;
+    [SerializeField] private GameObject goldDropPrefab;
 
     [Header("Data")]
     [SerializeField, ReadOnly] private UnitData unitData;
@@ -77,7 +78,6 @@ public class EnemyHandler : MonoBehaviour
             case EnemyState.Aggravated:
 
                 bool attacked = ChaseAndAttackTarget();
-
                 if (attacked)
                 {
                     state = EnemyState.Attacking;
@@ -177,6 +177,14 @@ public class EnemyHandler : MonoBehaviour
 
         Destroy(gameObject, 2f);
         state = EnemyState.Dying;
+
+        GameManager.instance.WaveReduced();
+
+        // Drop gold if possible
+        if (unitData.goldHeld > 0)
+        {
+            Instantiate(goldDropPrefab, transform.position, Quaternion.identity).GetComponent<GoldDropHandler>().Initialize(unitData.goldHeld);
+        }
     }
 
     #endregion

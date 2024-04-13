@@ -7,14 +7,19 @@ public class UnitData : ScriptableObject
 {
     public new string name;
 
-    [Header("Combat Stats")]
+    [Header("Health")]
     public int currentHP;
     public int maxHP;
+
+    [Header("Offensive")]
     public float aggroRange;
     public float attackRange;
     public float attackSpeed;
     public int attackDamage;
+
+    [Header("Other")]
     public float moveSpeed;
+    public int goldHeld;
 
     public bool IsDead { get { return currentHP <= 0; } }
 

@@ -85,15 +85,13 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
         {
             case FollowerState.Guarding:
 
-                agent.SetDestination(unitData.roomData.worldPosition);
-                animationn.Movement(agent.velocity);
-
                 if (leader != null)
                 {
                     StopAllCoroutines();
                     StartCoroutine(ShowIntent(Intent.Follow, intentDuration));
 
                     state = FollowerState.Following;
+                    return;
                 }
 
                 bool found = SearchForTarget();
@@ -104,7 +102,11 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
 
                     attackTimer = unitData.attackSpeed;
                     state = FollowerState.Aggravated;
+                    return;
                 }
+
+                agent.SetDestination(unitData.roomData.worldPosition);
+                animationn.Movement(agent.velocity);
 
                 break;
             case FollowerState.Following:

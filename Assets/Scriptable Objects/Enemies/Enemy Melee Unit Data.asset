@@ -20,6 +20,7 @@ MonoBehaviour:
   attackSpeed: 2
   attackDamage: 1
   moveSpeed: 0
+  goldHeld: 2
   transform: {fileID: 0}
   roomData:
     gridPosition: {x: 0, y: 0}

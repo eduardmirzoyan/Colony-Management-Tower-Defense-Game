@@ -66,6 +66,7 @@ public class WorldManager : MonoBehaviour
         floorTilemap.ClearAllTiles();
 
         WorldData worldData = new();
+        Dictionary<Vector2Int, RoomData> adjacencyTable = new();
 
         for (int i = 0; i < grid.GetLength(0); i++)
         {
@@ -83,6 +84,19 @@ public class WorldManager : MonoBehaviour
                 RoomData roomData = new(i, j, roomWidth, roomType);
                 Instantiate(roomPrefab, wallTilemap.transform).GetComponent<RoomHandler>().Initialize(roomData);
                 worldData.AddRoom(roomData);
+
+                // Determine adjacency
+                Vector2Int location = new(i, j);
+                foreach (var direction in IssacRoomGeneration.DIRECTIONS)
+                {
+                    Vector2Int newLocation = location + direction;
+                    if (adjacencyTable.TryGetValue(newLocation, out RoomData adjacentRoom))
+                    {
+                        roomData.AddAdjacent(adjacentRoom);
+                        adjacentRoom.AddAdjacent(roomData);
+                    }
+                }
+                adjacencyTable.Add(location, roomData);
 
                 // Handle visuals
                 RenderRoom(i, j);

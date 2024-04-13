@@ -59,4 +59,23 @@ public class GameEvents : MonoBehaviour
     public void TriggerOnDiscoverRoom(RoomData roomData) => OnDiscoverRoom?.Invoke(roomData);
 
     #endregion
+
+    #region Game States
+
+    public event Action OnStateExpand;
+    public event Action OnStatePrepare;
+    public event Action OnStateDefend;
+
+    public void TriggerOnStateExpand() => OnStateExpand?.Invoke();
+    public void TriggerOnStatePrepare() => OnStatePrepare?.Invoke();
+    public void TriggerOnStateDefend() => OnStateDefend?.Invoke();
+
+    #endregion
+
+    #region Gold
+
+    public event Action OnGoldGain;
+    public void TriggerOnGoldGain() => OnGoldGain?.Invoke();
+
+    #endregion
 }

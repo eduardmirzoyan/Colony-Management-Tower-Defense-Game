@@ -23,10 +23,10 @@ public class EnemySpawnerHandler : MonoBehaviour
     {
         UnitData copy = unitData.Copy();
         Vector3 spawnPosition = transform.position + spawnOffset;
-        var swordsman = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity).GetComponent<EnemyHandler>();
-        copy.Initialize(swordsman.transform, roomData);
+        var enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity).GetComponent<EnemyHandler>();
+        copy.Initialize(enemy.transform, roomData);
 
-        swordsman.Initialize(copy, worldData.playerData);
+        enemy.Initialize(copy, worldData.playerData);
     }
 
     private void OnDrawGizmosSelected()
