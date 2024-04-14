@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BarrierHandler : MonoBehaviour, IBarrier
 {
+    [SerializeField] private SpriteRenderer intentRenderer;
+
     [SerializeField] private RoomData roomData;
 
     public void Initialize(RoomData roomData, Vector2 direction)
@@ -16,5 +18,15 @@ public class BarrierHandler : MonoBehaviour, IBarrier
     public void Raise()
     {
         GameManager.instance.DiscoverRoom(roomData);
+    }
+
+    public void HoverEnter()
+    {
+        intentRenderer.color = Color.yellow;
+    }
+
+    public void HoverExit()
+    {
+        intentRenderer.color = Color.white;
     }
 }

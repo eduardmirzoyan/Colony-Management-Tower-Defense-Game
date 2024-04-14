@@ -16,14 +16,15 @@ MonoBehaviour:
   currentHP: 2
   maxHP: 2
   aggroRange: 4
-  attackRange: 2
+  attackRange: 3
   attackSpeed: 1
   attackDamage: 1
   moveSpeed: 0
+  goldHeld: 0
   transform: {fileID: 0}
   roomData:
     gridPosition: {x: 0, y: 0}
     size: 0
-    worldPosition: {x: 0, y: 0}
+    worldPosition: {x: 0, y: 0, z: 0}
     roomType: 0
     isDiscovered: 0

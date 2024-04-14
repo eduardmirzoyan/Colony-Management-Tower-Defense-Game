@@ -73,10 +73,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 055dbe522a9d75c419a538dfce480fa3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  intentRenderer: {fileID: 7488252857601634834}
   roomData:
     gridPosition: {x: 0, y: 0}
     size: 0
-    worldPosition: {x: 0, y: 0}
+    worldPosition: {x: 0, y: 0, z: 0}
     roomType: 0
     isDiscovered: 0
 --- !u!1 &2448932179240974990
@@ -631,10 +632,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 055dbe522a9d75c419a538dfce480fa3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  intentRenderer: {fileID: 2108486403137845786}
   roomData:
     gridPosition: {x: 0, y: 0}
     size: 0
-    worldPosition: {x: 0, y: 0}
+    worldPosition: {x: 0, y: 0, z: 0}
     roomType: 0
     isDiscovered: 0
 --- !u!1 &4480893072443351621
@@ -802,7 +804,7 @@ MonoBehaviour:
   roomData:
     gridPosition: {x: 0, y: 0}
     size: 0
-    worldPosition: {x: 0, y: 0}
+    worldPosition: {x: 0, y: 0, z: 0}
     roomType: 0
     isDiscovered: 0
   dimIntensity: 0
@@ -936,10 +938,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 055dbe522a9d75c419a538dfce480fa3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  intentRenderer: {fileID: 5613899670707440831}
   roomData:
     gridPosition: {x: 0, y: 0}
     size: 0
-    worldPosition: {x: 0, y: 0}
+    worldPosition: {x: 0, y: 0, z: 0}
     roomType: 0
     isDiscovered: 0
 --- !u!1 &7061726958576142212
@@ -1099,10 +1102,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 055dbe522a9d75c419a538dfce480fa3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  intentRenderer: {fileID: 923369598955958891}
   roomData:
     gridPosition: {x: 0, y: 0}
     size: 0
-    worldPosition: {x: 0, y: 0}
+    worldPosition: {x: 0, y: 0, z: 0}
     roomType: 0
     isDiscovered: 0
 --- !u!1 &7889176705621349407

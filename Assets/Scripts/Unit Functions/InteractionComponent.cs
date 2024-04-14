@@ -35,15 +35,13 @@ public class InteractionComponent : MonoBehaviour
             this.spawner = spawner;
 
             GameEvents.instance.TriggerOnEnterSpawner(spawner);
-
-            print("Found spawner");
         }
 
         if (other.gameObject.TryGetComponent(out IBarrier barrier))
         {
-            this.barrier = barrier;
+            barrier.HoverEnter();
 
-            print("Found barrier");
+            this.barrier = barrier;
         }
     }
 
@@ -65,6 +63,8 @@ public class InteractionComponent : MonoBehaviour
 
         if (other.gameObject.TryGetComponent(out IBarrier barrier) && this.barrier == barrier)
         {
+            barrier.HoverExit();
+
             this.barrier = null;
         }
     }

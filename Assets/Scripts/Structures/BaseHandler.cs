@@ -6,6 +6,7 @@ public class BaseHandler : MonoBehaviour, ISpawner
 {
     [Header("References")]
     [SerializeField] private DamageFlash damageFlash;
+    [SerializeField] private SpriteRenderer intentRenderer;
 
     [Header("Data")]
     [SerializeField] private UnitData unitData;
@@ -15,6 +16,7 @@ public class BaseHandler : MonoBehaviour, ISpawner
     public void Initialize(UnitData unitData)
     {
         this.unitData = unitData;
+        intentRenderer.enabled = false;
     }
 
     public void Spawn(UnitData _)
@@ -25,26 +27,44 @@ public class BaseHandler : MonoBehaviour, ISpawner
 
     private void Start()
     {
+        GameEvents.instance.OnEnterSpawner += EventEnter;
+        GameEvents.instance.OnExitSpawner += EventExit;
         GameEvents.instance.OnUnitTakeDamage += EventTakeDamage;
         GameEvents.instance.OnUnitDie += EventDie;
     }
 
     private void OnDestroy()
     {
+        GameEvents.instance.OnEnterSpawner -= EventEnter;
+        GameEvents.instance.OnExitSpawner -= EventExit;
         GameEvents.instance.OnUnitTakeDamage -= EventTakeDamage;
         GameEvents.instance.OnUnitDie -= EventDie;
     }
 
     #region Events
 
-    public void EventTakeDamage(UnitData unitData)
+    private void EventEnter(ISpawner spawner)
+    {
+        if (!spawner.Equals(this)) return;
+
+        intentRenderer.enabled = true;
+    }
+
+    private void EventExit(ISpawner spawner)
+    {
+        if (!spawner.Equals(this)) return;
+
+        intentRenderer.enabled = false;
+    }
+
+    private void EventTakeDamage(UnitData unitData)
     {
         if (this.unitData != unitData) return;
 
         damageFlash.Flash();
     }
 
-    public void EventDie(UnitData unitData)
+    private void EventDie(UnitData unitData)
     {
         if (this.unitData != unitData) return;
 

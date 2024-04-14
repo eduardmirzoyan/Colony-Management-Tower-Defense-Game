@@ -11,12 +11,12 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
 
     [Header("References")]
     [SerializeField] private NavMeshAgent agent;
-    [SerializeField] private SpriteRenderer intentIcon;
+    [SerializeField] private SpriteRenderer intentRenderer;
+    [SerializeField] private SpriteRenderer outlineRenderer;
     [SerializeField] private AnimationComponent animationn;
     [SerializeField] private DamageFlash damageFlash;
     [SerializeField] private LayerMask enemyLayer;
     [SerializeField] private Sprite[] intentSprites;
-    [SerializeField] private GameObject corpsePrefab;
 
     [Header("Data")]
     [SerializeField, ReadOnly] private UnitData unitData;
@@ -36,7 +36,7 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
 
         StartCoroutine(ShowIntent(Intent.Defend, intentDuration));
         state = FollowerState.Guarding;
-        intentIcon.sprite = null;
+        intentRenderer.sprite = null;
 
         gameObject.name = unitData.ToString();
     }
@@ -61,7 +61,8 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
         agent.updateRotation = false;
         agent.updateUpAxis = false;
         agent.avoidancePriority = Random.Range(0, 1000);
-        intentIcon.sprite = null;
+        intentRenderer.sprite = null;
+        outlineRenderer.enabled = false;
     }
 
     private void Start()
@@ -131,6 +132,7 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
 
                 if (attacked)
                 {
+                    agent.isStopped = true;
                     state = FollowerState.Attacking;
                 }
                 else if (target.transform == null)
@@ -146,7 +148,15 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
                 if (animationn.CurrentAnimationOver())
                 {
                     attackTimer = unitData.attackSpeed;
-                    state = target.transform == null ? FollowerState.Guarding : FollowerState.Aggravated;
+
+                    agent.isStopped = false;
+                    if (target.transform == null)
+                    {
+                        target = null;
+                        state = FollowerState.Guarding;
+                    }
+                    else
+                        state = FollowerState.Aggravated;
                 }
 
                 break;
@@ -175,11 +185,13 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
         if (Vector2.Distance(transform.position, target.transform.position) > unitData.attackRange)
         {
             // Get closer
+            agent.isStopped = false;
             agent.SetDestination(target.transform.position);
             animationn.Movement(agent.velocity);
         }
         else
         {
+            agent.isStopped = true;
             if (attackTimer <= 0)
             {
                 GameLogic.AttackUnit(unitData, target);
@@ -199,8 +211,8 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
 
     private IEnumerator ShowIntent(Intent intent, float duration)
     {
-        intentIcon.sprite = intentSprites[(int)intent];
-        intentIcon.color = Color.white;
+        intentRenderer.sprite = intentSprites[(int)intent];
+        intentRenderer.color = Color.white;
 
         // Hold
         yield return new WaitForSeconds(duration);
@@ -210,14 +222,14 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
         while (elapsed < 0.5f)
         {
             // Lerp color
-            intentIcon.color = Color.Lerp(Color.white, Color.clear, elapsed / duration);
+            intentRenderer.color = Color.Lerp(Color.white, Color.clear, elapsed / duration);
 
             elapsed += Time.deltaTime;
             yield return null;
         }
 
-        intentIcon.sprite = null;
-        intentIcon.color = Color.white;
+        intentRenderer.sprite = null;
+        intentRenderer.color = Color.white;
     }
 
     #endregion
@@ -227,15 +239,15 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
     private void EventEnterFollow(IFollower follower)
     {
         if (follower.Equals(this))
-            intentIcon.sprite = intentSprites[(int)Intent.Select];
+            outlineRenderer.enabled = true;
         else
-            intentIcon.sprite = null;
+            outlineRenderer.enabled = false;
     }
 
     private void EventExitFollow(IFollower follower)
     {
         if (follower.Equals(this))
-            intentIcon.sprite = null;
+            outlineRenderer.enabled = false;
     }
 
     public void EventTakeDamage(UnitData unitData)
@@ -270,9 +282,10 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, unitData.attackRange);
 
-        if (target == null) return;
+        if (target?.transform == null) return;
 
         Gizmos.color = Color.cyan;
         Gizmos.DrawLine(transform.position, target.transform.position);
+        Gizmos.DrawWireSphere(target.transform.position, 0.25f);
     }
 }

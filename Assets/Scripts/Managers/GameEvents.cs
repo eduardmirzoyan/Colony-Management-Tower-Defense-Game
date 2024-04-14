@@ -18,6 +18,9 @@ public class GameEvents : MonoBehaviour
         instance = this;
     }
 
+    public event Action<WorldData> OnGenerateWorld;
+    public void TriggerOnGenrateWorld(WorldData worldData) => OnGenerateWorld?.Invoke(worldData);
+
     #region Followers
 
     public event Action<IFollower> OnEnterFollower;
@@ -74,10 +77,10 @@ public class GameEvents : MonoBehaviour
 
     #region Gold
 
-    public event Action OnGoldGain;
-    public event Action OnGoldLoss;
-    public void TriggerOnGoldGain() => OnGoldGain?.Invoke();
-    public void TriggerOnGoldLoss() => OnGoldLoss?.Invoke();
+    public event Action<UnitData> OnGoldGain;
+    public event Action<UnitData> OnGoldLoss;
+    public void TriggerOnGoldGain(UnitData unitData) => OnGoldGain?.Invoke(unitData);
+    public void TriggerOnGoldLoss(UnitData unitData) => OnGoldLoss?.Invoke(unitData);
 
     #endregion
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class FollowerSpawnerHandler : MonoBehaviour, ISpawner
 {
     [Header("References")]
-    [SerializeField] private GameObject followerPrefab;
+    [SerializeField] private SpriteRenderer intentRenderer;
     [SerializeField] private Vector3 spawnOffset;
 
     [Header("Data")]
@@ -14,10 +14,24 @@ public class FollowerSpawnerHandler : MonoBehaviour, ISpawner
 
     [Header("Settings")]
     [SerializeField] private int cost;
+    [SerializeField] private bool isRanged;
+
+    private void Start()
+    {
+        GameEvents.instance.OnEnterSpawner += EventEnter;
+        GameEvents.instance.OnExitSpawner += EventExit;
+    }
+
+    private void OnDestroy()
+    {
+        GameEvents.instance.OnEnterSpawner -= EventEnter;
+        GameEvents.instance.OnExitSpawner -= EventExit;
+    }
 
     public void Initialize(RoomData roomData)
     {
         this.roomData = roomData;
+        intentRenderer.enabled = false;
     }
 
     public void Spawn(UnitData player)
@@ -26,12 +40,30 @@ public class FollowerSpawnerHandler : MonoBehaviour, ISpawner
             return;
 
         // Spawn unit
-        SpawnManager.instance.SpawnAlly(unitData, roomData, transform.position + spawnOffset);
+        SpawnManager.instance.SpawnAlly(unitData, roomData, transform.position + spawnOffset, isRanged);
 
         // Reduce hold
         player.goldHeld -= cost;
-        GameEvents.instance.TriggerOnGoldLoss();
+        GameEvents.instance.TriggerOnGoldLoss(player);
     }
+
+    #region Events
+
+    private void EventEnter(ISpawner spawner)
+    {
+        if (!spawner.Equals(this)) return;
+
+        intentRenderer.enabled = true;
+    }
+
+    private void EventExit(ISpawner spawner)
+    {
+        if (!spawner.Equals(this)) return;
+
+        intentRenderer.enabled = false;
+    }
+
+    #endregion
 
     private void OnDrawGizmosSelected()
     {

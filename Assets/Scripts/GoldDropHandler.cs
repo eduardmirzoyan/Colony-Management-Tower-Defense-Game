@@ -15,13 +15,15 @@ public class GoldDropHandler : MonoBehaviour
     {
         if (other.gameObject.TryGetComponent(out PlayerHandler playerHandler))
         {
-            print($"{playerHandler.UnitData} gained {goldValue} gold!");
+            var playerData = playerHandler.UnitData;
+
+            print($"{playerData} gained {goldValue} gold!");
 
             // Add gold to player
-            playerHandler.UnitData.goldHeld += goldValue;
+            playerData.goldHeld += goldValue;
 
             // Event
-            GameEvents.instance.TriggerOnGoldGain();
+            GameEvents.instance.TriggerOnGoldGain(playerData);
 
             // Destroy this
             Destroy(gameObject);

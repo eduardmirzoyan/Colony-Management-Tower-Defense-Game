@@ -6,7 +6,8 @@ public class SpawnManager : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private GameObject enemyPrefab;
-    [SerializeField] private GameObject allyPrefab;
+    [SerializeField] private GameObject meleePrefab;
+    [SerializeField] private GameObject rangedPrefab;
     [SerializeField] private GameObject corpsePrefab;
 
     [Header("Debug")]
@@ -30,11 +31,13 @@ public class SpawnManager : MonoBehaviour
         this.worldData = worldData;
     }
 
-    public void SpawnAlly(UnitData unitData, RoomData roomData, Vector3 position)
+    public void SpawnAlly(UnitData unitData, RoomData roomData, Vector3 position, bool isRanged = false)
     {
+        GameObject prefab = isRanged ? rangedPrefab : meleePrefab;
+
         UnitData copy = unitData.Copy();
         Vector3 spawnPosition = position;
-        var follower = Instantiate(allyPrefab, spawnPosition, Quaternion.identity).GetComponent<FollowerHandler>();
+        var follower = Instantiate(prefab, spawnPosition, Quaternion.identity).GetComponent<FollowerHandler>();
         copy.Initialize(follower.transform, roomData);
 
         follower.Initialize(copy);

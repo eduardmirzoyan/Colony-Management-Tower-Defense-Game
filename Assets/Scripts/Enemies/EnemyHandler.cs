@@ -18,7 +18,6 @@ public class EnemyHandler : MonoBehaviour
     [SerializeField] private DamageFlash damageFlash;
     [SerializeField] private LayerMask allyLayer;
     [SerializeField] private GameObject goldDropPrefab;
-    [SerializeField] private GameObject corpsePrefab;
 
     [Header("Data")]
     [SerializeField, ReadOnly] private UnitData unitData;
@@ -28,7 +27,6 @@ public class EnemyHandler : MonoBehaviour
     [SerializeField, ReadOnly] private UnitData target;
     [SerializeField, ReadOnly] private EnemyState state;
     [SerializeField, ReadOnly] private float attackTimer;
-    [SerializeField] private bool printLogs;
 
     public UnitData UnitData { get { return unitData; } }
 
@@ -218,7 +216,7 @@ public class EnemyHandler : MonoBehaviour
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, unitData.attackRange);
 
-        if (target == null) return;
+        if (target?.transform == null) return;
 
         Gizmos.color = Color.cyan;
         Gizmos.DrawLine(transform.position, target.transform.position);

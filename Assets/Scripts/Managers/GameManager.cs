@@ -38,6 +38,8 @@ public class GameManager : MonoBehaviour
         InitializeSpawners();
         waveData = null;
 
+        DebugManager.instance.Initialize(worldData);
+
         StartCoroutine(DelayedStart());
     }
 
@@ -47,6 +49,8 @@ public class GameManager : MonoBehaviour
 
         DiscoverRoom(worldData.playerData.roomData);
         EnterRoom(worldData.playerData.roomData);
+
+        GameEvents.instance.TriggerOnGenrateWorld(worldData);
 
         yield return new WaitForSeconds(1f);
 
@@ -82,6 +86,7 @@ public class GameManager : MonoBehaviour
         SetupWave(out waveData);
         if (waveData is null)
         {
+            // TODO
             // Finish wave
             // CompleteWave();
             // return;
@@ -150,17 +155,6 @@ public class GameManager : MonoBehaviour
 
         // Load new level
         TransitionManager.instance.ReloadScene();
-    }
-
-    // TESTING
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            //SpawnEnemy();
-            // worldData.Trace();
-            EnemyManager.instance.Spawn(worldData.rooms[0]);
-        }
     }
 
     #region Helpers
