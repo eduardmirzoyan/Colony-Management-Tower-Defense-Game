@@ -11,6 +11,7 @@ using UnityEngine.AI;
 public class EnemyHandler : MonoBehaviour
 {
     private enum EnemyState { Chasing, Aggravated, Attacking }
+    private const int MAX_PRIORITY = 99;
 
     [Header("References")]
     [SerializeField] private NavMeshAgent agent;
@@ -44,7 +45,7 @@ public class EnemyHandler : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
-        agent.avoidancePriority = Random.Range(0, 1000);
+        agent.avoidancePriority = Random.Range(0, MAX_PRIORITY);
     }
 
     private void Start()

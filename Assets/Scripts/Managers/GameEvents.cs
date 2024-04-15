@@ -33,9 +33,11 @@ public class GameEvents : MonoBehaviour
 
     #region Combat
 
+    public event Action<UnitData> OnUnitSpawn;
     public event Action<UnitData> OnUnitTakeDamage;
     public event Action<UnitData> OnUnitDie;
 
+    public void TriggerOnUnitSpawn(UnitData unitData) => OnUnitSpawn?.Invoke(unitData);
     public void TriggerOnUnitTakeDamage(UnitData unitData) => OnUnitTakeDamage?.Invoke(unitData);
     public void TriggerOnUnitDie(UnitData unitData) => OnUnitDie?.Invoke(unitData);
 
@@ -66,11 +68,11 @@ public class GameEvents : MonoBehaviour
     #region Game States
 
     public event Action OnStateExpand;
-    public event Action OnStatePrepare;
+    public event Action<WaveData> OnStatePrepare;
     public event Action OnStateDefend;
 
     public void TriggerOnStateExpand() => OnStateExpand?.Invoke();
-    public void TriggerOnStatePrepare() => OnStatePrepare?.Invoke();
+    public void TriggerOnStatePrepare(WaveData waveData) => OnStatePrepare?.Invoke(waveData);
     public void TriggerOnStateDefend() => OnStateDefend?.Invoke();
 
     #endregion

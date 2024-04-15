@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using TMPro;
 
 public class RoomHandler : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class RoomHandler : MonoBehaviour
     [SerializeField] private PolygonCollider2D polygonCollider2d;
     [SerializeField] private Light2D light2d;
     [SerializeField] private BarrierHandler[] barrierHandlers;
+    [SerializeField] private TextMeshPro textMesh;
 
     [Header("Data")]
     [SerializeField] private RoomData roomData;
@@ -24,6 +26,8 @@ public class RoomHandler : MonoBehaviour
         GameEvents.instance.OnEnterRoom += EventEnterRoom;
         GameEvents.instance.OnExitRoom += EventExitRoom;
         GameEvents.instance.OnDiscoverRoom += EventDiscoverRoom;
+        GameEvents.instance.OnStatePrepare += EventPrepare;
+        GameEvents.instance.OnStateExpand += EventExpand;
     }
 
     private void OnDestroy()
@@ -31,6 +35,8 @@ public class RoomHandler : MonoBehaviour
         GameEvents.instance.OnEnterRoom -= EventEnterRoom;
         GameEvents.instance.OnExitRoom -= EventExitRoom;
         GameEvents.instance.OnDiscoverRoom -= EventDiscoverRoom;
+        GameEvents.instance.OnStatePrepare -= EventPrepare;
+        GameEvents.instance.OnStateExpand -= EventExpand;
     }
 
     public void Initialize(RoomData roomData)
@@ -54,6 +60,7 @@ public class RoomHandler : MonoBehaviour
         light2d.intensity = dimIntensity;
 
         InitializeBarriers();
+        textMesh.text = string.Empty;
 
         // Set name
         gameObject.name = $"{roomData}";
@@ -102,6 +109,21 @@ public class RoomHandler : MonoBehaviour
             Destroy(barrier.gameObject);
         }
         barrierHandlers = null;
+    }
+
+    private void EventPrepare(WaveData waveData)
+    {
+        if (waveData == null) return;
+
+        if (waveData.spawnRoomTable.ContainsKey(roomData))
+        {
+            textMesh.text = $"x{waveData.spawnRoomTable[roomData]}";
+        }
+    }
+
+    private void EventExpand()
+    {
+        textMesh.text = string.Empty;
     }
 
     private IEnumerator ChangeLightOverTime(float startIntensity, float endIntensity, float duration)

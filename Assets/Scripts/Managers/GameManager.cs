@@ -95,7 +95,7 @@ public class GameManager : MonoBehaviour
         // Now player needs to prepare for wave
         gameState = GameState.Prepare;
 
-        GameEvents.instance.TriggerOnStatePrepare();
+        GameEvents.instance.TriggerOnStatePrepare(waveData);
         GameEvents.instance.TriggerOnDiscoverRoom(roomData);
     }
 

@@ -17,6 +17,7 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
     [SerializeField] private DamageFlash damageFlash;
     [SerializeField] private LayerMask enemyLayer;
     [SerializeField] private Sprite[] intentSprites;
+    [SerializeField] private LineRenderer lineRenderer;
 
     [Header("Data")]
     [SerializeField, ReadOnly] private UnitData unitData;
@@ -101,6 +102,7 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
                 {
                     StopAllCoroutines();
                     StartCoroutine(ShowIntent(Intent.Attack, intentDuration));
+                    lineRenderer.positionCount = 0;
 
                     attackTimer = unitData.attackSpeed;
                     state = FollowerState.Aggravated;
@@ -109,6 +111,7 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
 
                 agent.SetDestination(unitData.roomData.worldPosition);
                 animationn.Movement(agent.velocity);
+                UpdateMoveLine(transform.position, unitData.roomData.worldPosition, agent.stoppingDistance);
 
                 break;
             case FollowerState.Following:
@@ -122,8 +125,21 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
                     return;
                 }
 
+                bool f = SearchForTarget();
+                if (f)
+                {
+                    StopAllCoroutines();
+                    StartCoroutine(ShowIntent(Intent.Attack, intentDuration));
+                    lineRenderer.positionCount = 0;
+
+                    attackTimer = unitData.attackSpeed;
+                    state = FollowerState.Aggravated;
+                    return;
+                }
+
                 agent.SetDestination(leader.transform.position);
                 animationn.Movement(agent.velocity);
+                UpdateMoveLine(transform.position, leader.transform.position, agent.stoppingDistance);
 
                 break;
             case FollowerState.Aggravated:
@@ -196,6 +212,8 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
             {
                 GameLogic.AttackUnit(unitData, target);
 
+                // Instantiate(projPrefab).GetComponent<ProjectileHandler>().Initialize(unitData, target, 1f);
+
                 animationn.Attack();
                 return true;
             }
@@ -230,6 +248,18 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
 
         intentRenderer.sprite = null;
         intentRenderer.color = Color.white;
+    }
+
+    private void UpdateMoveLine(Vector3 startPosition, Vector3 endPosition, float minRadius)
+    {
+        lineRenderer.positionCount = 0;
+
+        if (Vector3.Distance(startPosition, endPosition) > minRadius)
+        {
+            lineRenderer.positionCount = 2;
+            lineRenderer.SetPosition(0, startPosition);
+            lineRenderer.SetPosition(1, endPosition);
+        }
     }
 
     #endregion
