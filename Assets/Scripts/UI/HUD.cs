@@ -17,16 +17,18 @@ public class HUD : MonoBehaviour
     {
         GameEvents.instance.OnGenerateWorld += EventGenerateWorld;
         GameEvents.instance.OnUnitTakeDamage += EventUpdateHealth;
-        GameEvents.instance.OnGoldGain += EventUpdateGold;
-        GameEvents.instance.OnGoldLoss += EventUpdateGold;
+        GameEvents.instance.OnGoldChange += EventUpdateGold;
+        GameEvents.instance.OnUnitSpawn += EventUpdateUnits;
+        GameEvents.instance.OnUnitDie += EventUpdateUnits;
     }
 
     private void OnDestroy()
     {
         GameEvents.instance.OnGenerateWorld -= EventGenerateWorld;
         GameEvents.instance.OnUnitTakeDamage -= EventUpdateHealth;
-        GameEvents.instance.OnGoldGain -= EventUpdateGold;
-        GameEvents.instance.OnGoldLoss -= EventUpdateGold;
+        GameEvents.instance.OnGoldChange -= EventUpdateGold;
+        GameEvents.instance.OnUnitSpawn -= EventUpdateUnits;
+        GameEvents.instance.OnUnitDie -= EventUpdateUnits;
     }
 
     private void EventGenerateWorld(WorldData worldData)
@@ -52,10 +54,8 @@ public class HUD : MonoBehaviour
         goldLabel.text = $"{unitData.goldHeld}";
     }
 
-    private void EventUpdateUnits(UnitData unitData)
+    private void EventUpdateUnits(UnitData _)
     {
-        if (worldData.playerData != unitData) return;
-
-        unitsLabel.text = "0";
+        unitsLabel.text = $"{worldData.NumTotalUnits}";
     }
 }

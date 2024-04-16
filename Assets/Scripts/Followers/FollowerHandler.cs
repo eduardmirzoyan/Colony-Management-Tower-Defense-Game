@@ -22,12 +22,14 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
     [Header("Data")]
     [SerializeField, ReadOnly] private UnitData unitData;
     [SerializeField] private float intentDuration;
+    [SerializeField] private float attackTimestamp;
 
     [Header("Debug")]
     [SerializeField, ReadOnly] private UnitData leader;
     [SerializeField, ReadOnly] private UnitData target;
     [SerializeField, ReadOnly] private FollowerState state;
     [SerializeField, ReadOnly] private float attackTimer;
+    [SerializeField, ReadOnly] private bool hasAttacked;
 
     public UnitData UnitData { get { return unitData; } }
 
@@ -46,11 +48,11 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
     {
         if (leader != null) // Start following leader
         {
-            unitData.roomData = null;
+            GameLogic.AssignUnitToRoom(unitData, null);
         }
         else if (this.leader != null) // Null means assign yourself to current room
         {
-            unitData.roomData = this.leader.roomData;
+            GameLogic.AssignUnitToRoom(unitData, this.leader.roomData);
         }
 
         this.leader = leader;
@@ -160,12 +162,20 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
                 break;
             case FollowerState.Attacking:
 
+                // Attack part-way in animation
+                float ratio = animationn.CurrentAnimationRatio();
+                if (ratio >= attackTimestamp && !hasAttacked && target.transform != null)
+                {
+                    GameLogic.AttackUnit(unitData, target);
+                    hasAttacked = true;
+                }
+
                 // Wait until animation is over
-                if (animationn.CurrentAnimationOver())
+                if (ratio >= 0.95f)
                 {
                     attackTimer = unitData.attackSpeed;
-
                     agent.isStopped = false;
+
                     if (target.transform == null)
                     {
                         target = null;
@@ -210,7 +220,7 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
             agent.isStopped = true;
             if (attackTimer <= 0)
             {
-                GameLogic.AttackUnit(unitData, target);
+                hasAttacked = false;
 
                 // Instantiate(projPrefab).GetComponent<ProjectileHandler>().Initialize(unitData, target, 1f);
 

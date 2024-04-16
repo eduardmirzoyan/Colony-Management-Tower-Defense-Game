@@ -15,4 +15,22 @@ public static class GameLogic
             GameEvents.instance.TriggerOnUnitDie(victim);
         }
     }
+
+    public static void AssignUnitToRoom(UnitData unitData, RoomData roomData)
+    {
+        if (roomData != null)
+        {
+            // Add to new room
+            roomData.AddUnit(unitData);
+            GameEvents.instance.TriggerOnUnitAssign(unitData, roomData);
+        }
+        else
+        {
+            // Remove self from current room
+            unitData.roomData?.RemoveUnit(unitData);
+            GameEvents.instance.TriggerOnUnitAssign(unitData, unitData.roomData);
+        }
+
+        unitData.roomData = roomData;
+    }
 }

@@ -36,20 +36,22 @@ public class GameEvents : MonoBehaviour
     public event Action<UnitData> OnUnitSpawn;
     public event Action<UnitData> OnUnitTakeDamage;
     public event Action<UnitData> OnUnitDie;
+    public event Action<UnitData, RoomData> OnUnitAssign;
 
     public void TriggerOnUnitSpawn(UnitData unitData) => OnUnitSpawn?.Invoke(unitData);
     public void TriggerOnUnitTakeDamage(UnitData unitData) => OnUnitTakeDamage?.Invoke(unitData);
     public void TriggerOnUnitDie(UnitData unitData) => OnUnitDie?.Invoke(unitData);
+    public void TriggerOnUnitAssign(UnitData unitData, RoomData roomData) => OnUnitAssign?.Invoke(unitData, roomData);
 
     #endregion
 
-    #region Spawners
+    #region Structures
 
-    public event Action<ISpawner> OnEnterSpawner;
-    public event Action<ISpawner> OnExitSpawner;
+    public event Action<IStructure> OnEnterStructure;
+    public event Action<IStructure> OnExitStructure;
 
-    public void TriggerOnEnterSpawner(ISpawner spawner) => OnEnterSpawner?.Invoke(spawner);
-    public void TriggerOnExitSpawner(ISpawner spawner) => OnExitSpawner?.Invoke(spawner);
+    public void TriggerOnEnterStructure(IStructure structure) => OnEnterStructure?.Invoke(structure);
+    public void TriggerOnExitStructure(IStructure structure) => OnExitStructure?.Invoke(structure);
 
     #endregion
 
@@ -79,10 +81,8 @@ public class GameEvents : MonoBehaviour
 
     #region Gold
 
-    public event Action<UnitData> OnGoldGain;
-    public event Action<UnitData> OnGoldLoss;
-    public void TriggerOnGoldGain(UnitData unitData) => OnGoldGain?.Invoke(unitData);
-    public void TriggerOnGoldLoss(UnitData unitData) => OnGoldLoss?.Invoke(unitData);
+    public event Action<UnitData> OnGoldChange;
+    public void TriggerOnGoldChange(UnitData unitData) => OnGoldChange?.Invoke(unitData);
 
     #endregion
 }

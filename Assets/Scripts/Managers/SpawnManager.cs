@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
@@ -39,8 +40,12 @@ public class SpawnManager : MonoBehaviour
         Vector3 spawnPosition = position;
         var follower = Instantiate(prefab, spawnPosition, Quaternion.identity).GetComponent<FollowerHandler>();
         copy.Initialize(follower.transform, roomData);
+        roomData.AddUnit(copy);
 
         follower.Initialize(copy);
+
+        GameEvents.instance.TriggerOnUnitSpawn(copy);
+        GameEvents.instance.TriggerOnUnitAssign(copy, roomData);
     }
 
     public void SpawnEnemy(UnitData unitData, RoomData roomData)
@@ -49,8 +54,11 @@ public class SpawnManager : MonoBehaviour
         Vector3 spawnPosition = roomData.worldPosition;
         var enemyHandler = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity).GetComponent<EnemyHandler>();
         copy.Initialize(enemyHandler.transform, roomData);
+        roomData.AddUnit(copy);
 
         enemyHandler.Initialize(copy, worldData.baseData);
+
+        GameEvents.instance.TriggerOnUnitSpawn(copy);
     }
 
     public void SpawnCorpse(UnitData unitData)

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseHandler : MonoBehaviour, ISpawner
+public class BaseHandler : MonoBehaviour, IStructure
 {
     [Header("References")]
     [SerializeField] private DamageFlash damageFlash;
@@ -19,7 +19,7 @@ public class BaseHandler : MonoBehaviour, ISpawner
         intentRenderer.enabled = false;
     }
 
-    public void Spawn(UnitData _)
+    public void Use(UnitData _)
     {
         // Start wave
         GameManager.instance.StartWave();
@@ -27,32 +27,32 @@ public class BaseHandler : MonoBehaviour, ISpawner
 
     private void Start()
     {
-        GameEvents.instance.OnEnterSpawner += EventEnter;
-        GameEvents.instance.OnExitSpawner += EventExit;
+        GameEvents.instance.OnEnterStructure += EventEnter;
+        GameEvents.instance.OnExitStructure += EventExit;
         GameEvents.instance.OnUnitTakeDamage += EventTakeDamage;
         GameEvents.instance.OnUnitDie += EventDie;
     }
 
     private void OnDestroy()
     {
-        GameEvents.instance.OnEnterSpawner -= EventEnter;
-        GameEvents.instance.OnExitSpawner -= EventExit;
+        GameEvents.instance.OnEnterStructure -= EventEnter;
+        GameEvents.instance.OnExitStructure -= EventExit;
         GameEvents.instance.OnUnitTakeDamage -= EventTakeDamage;
         GameEvents.instance.OnUnitDie -= EventDie;
     }
 
     #region Events
 
-    private void EventEnter(ISpawner spawner)
+    private void EventEnter(IStructure structure)
     {
-        if (!spawner.Equals(this)) return;
+        if (!structure.Equals(this)) return;
 
         intentRenderer.enabled = true;
     }
 
-    private void EventExit(ISpawner spawner)
+    private void EventExit(IStructure structure)
     {
-        if (!spawner.Equals(this)) return;
+        if (!structure.Equals(this)) return;
 
         intentRenderer.enabled = false;
     }

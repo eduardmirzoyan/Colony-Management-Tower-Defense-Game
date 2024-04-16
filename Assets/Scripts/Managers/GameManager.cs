@@ -47,6 +47,7 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(0.1f);
 
+        //WorldManager.instance.BakeNavMesh(); // TEST
         DiscoverRoom(worldData.playerData.roomData);
         EnterRoom(worldData.playerData.roomData);
 
@@ -74,8 +75,6 @@ public class GameManager : MonoBehaviour
 
     public void DiscoverRoom(RoomData roomData)
     {
-        // if (gameState != GameState.Expand) throw new System.Exception($"ATTEMPTING EXPANSION WHEN GAME IS IN STATE: {gameState}");
-
         print("Begin to prepare...");
 
         // Discover room
@@ -101,8 +100,6 @@ public class GameManager : MonoBehaviour
 
     public void StartWave()
     {
-        // if (gameState != GameState.Expand) throw new System.Exception($"ATTEMPTING WAVE START WHEN GAME IS IN STATE: {gameState}");
-
         print("Starting Wave...");
         print(waveData);
 
@@ -126,8 +123,6 @@ public class GameManager : MonoBehaviour
 
     public void CompleteWave()
     {
-        // if (gameState != GameState.Expand) throw new System.Exception($"ATTEMPTING WAVE END WHEN GAME IS IN STATE: {gameState}");
-
         print("Wave Complete...");
 
         // Do any cleanup

@@ -73,6 +73,7 @@ MonoBehaviour:
     worldPosition: {x: 0, y: 0, z: 0}
     roomType: 0
     isDiscovered: 0
+    units: []
   unitData: {fileID: 11400000, guid: afac8e7fe2e36fa4ba13c24ad6b7b0e5, type: 2}
   cost: 2
   isRanged: 1
@@ -254,12 +255,13 @@ GameObject:
   m_Component:
   - component: {fileID: 3135649273530195170}
   - component: {fileID: 2434719999617526450}
+  - component: {fileID: 7057651446100969133}
   m_Layer: 8
   m_Name: Hitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &3135649273530195170
 Transform:
@@ -302,6 +304,22 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.6, y: 1.4}
   m_EdgeRadius: 0
+--- !u!208 &7057651446100969133
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6968158465751458183}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 0
+  m_Center: {x: 0, y: 0.25, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &7281437915404925332
 GameObject:
   m_ObjectHideFlags: 0

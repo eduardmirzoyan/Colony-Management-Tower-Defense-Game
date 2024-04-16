@@ -245,7 +245,7 @@ public class WorldManager : MonoBehaviour
         Instantiate(finishMarkerPrefab, center, Quaternion.identity, markersParent);
     }
 
-    private void BakeNavMesh()
+    public void BakeNavMesh()
     {
         navMeshSurface.BuildNavMesh();
     }

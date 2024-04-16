@@ -48,6 +48,12 @@ public class PlayerHandler : MonoBehaviour
         if (Input.GetKeyDown(interactKey))
         {
             interaction.HandleInteractions(unitData);
+            interaction.SetAutoRecruit(unitData);
+        }
+
+        if (Input.GetKeyUp(interactKey))
+        {
+            interaction.SetAutoRecruit(null);
         }
     }
 

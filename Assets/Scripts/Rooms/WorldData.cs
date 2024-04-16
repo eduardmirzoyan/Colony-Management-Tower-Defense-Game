@@ -24,6 +24,20 @@ public class WorldData
         }
     }
 
+    public int NumTotalUnits
+    {
+        get
+        {
+            if (rooms == null) return 0;
+
+            int count = 0;
+            foreach (RoomData room in rooms)
+                count += room.units.Count;
+
+            return count;
+        }
+    }
+
     public WorldData()
     {
         rooms = new List<RoomData>();

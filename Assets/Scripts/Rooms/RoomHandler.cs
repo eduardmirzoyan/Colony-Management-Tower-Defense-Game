@@ -28,6 +28,7 @@ public class RoomHandler : MonoBehaviour
         GameEvents.instance.OnDiscoverRoom += EventDiscoverRoom;
         GameEvents.instance.OnStatePrepare += EventPrepare;
         GameEvents.instance.OnStateExpand += EventExpand;
+        GameEvents.instance.OnUnitAssign += EventAssign;
     }
 
     private void OnDestroy()
@@ -37,6 +38,7 @@ public class RoomHandler : MonoBehaviour
         GameEvents.instance.OnDiscoverRoom -= EventDiscoverRoom;
         GameEvents.instance.OnStatePrepare -= EventPrepare;
         GameEvents.instance.OnStateExpand -= EventExpand;
+        GameEvents.instance.OnUnitAssign -= EventAssign;
     }
 
     public void Initialize(RoomData roomData)
@@ -70,6 +72,8 @@ public class RoomHandler : MonoBehaviour
     {
         GameManager.instance.EnterRoom(roomData);
     }
+
+    #region Events
 
     private void EventEnterRoom(RoomData roomData)
     {
@@ -117,6 +121,7 @@ public class RoomHandler : MonoBehaviour
 
         if (waveData.spawnRoomTable.ContainsKey(roomData))
         {
+            textMesh.color = Color.red;
             textMesh.text = $"x{waveData.spawnRoomTable[roomData]}";
         }
     }
@@ -125,6 +130,19 @@ public class RoomHandler : MonoBehaviour
     {
         textMesh.text = string.Empty;
     }
+
+    private void EventAssign(UnitData _, RoomData roomData)
+    {
+        if (this.roomData != roomData) return;
+
+        textMesh.color = Color.white;
+        if (roomData.units.Count > 0) textMesh.text = $"x{roomData.units.Count}";
+        else textMesh.text = string.Empty;
+    }
+
+    #endregion
+
+    #region Helpers
 
     private IEnumerator ChangeLightOverTime(float startIntensity, float endIntensity, float duration)
     {
@@ -141,8 +159,6 @@ public class RoomHandler : MonoBehaviour
 
         light2d.intensity = endIntensity;
     }
-
-    #region Helpers
 
     private void InitializeBarriers()
     {

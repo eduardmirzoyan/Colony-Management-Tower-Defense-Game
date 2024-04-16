@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FollowerSpawnerHandler : MonoBehaviour, ISpawner
+public class FollowerSpawnerHandler : MonoBehaviour, IStructure
 {
     [Header("References")]
     [SerializeField] private SpriteRenderer intentRenderer;
@@ -18,14 +18,14 @@ public class FollowerSpawnerHandler : MonoBehaviour, ISpawner
 
     private void Start()
     {
-        GameEvents.instance.OnEnterSpawner += EventEnter;
-        GameEvents.instance.OnExitSpawner += EventExit;
+        GameEvents.instance.OnEnterStructure += EventEnter;
+        GameEvents.instance.OnExitStructure += EventExit;
     }
 
     private void OnDestroy()
     {
-        GameEvents.instance.OnEnterSpawner -= EventEnter;
-        GameEvents.instance.OnExitSpawner -= EventExit;
+        GameEvents.instance.OnEnterStructure -= EventEnter;
+        GameEvents.instance.OnExitStructure -= EventExit;
     }
 
     public void Initialize(RoomData roomData)
@@ -34,7 +34,7 @@ public class FollowerSpawnerHandler : MonoBehaviour, ISpawner
         intentRenderer.enabled = false;
     }
 
-    public void Spawn(UnitData player)
+    public void Use(UnitData player)
     {
         if (player.goldHeld < cost)
             return;
@@ -44,21 +44,21 @@ public class FollowerSpawnerHandler : MonoBehaviour, ISpawner
 
         // Reduce hold
         player.goldHeld -= cost;
-        GameEvents.instance.TriggerOnGoldLoss(player);
+        GameEvents.instance.TriggerOnGoldChange(player);
     }
 
     #region Events
 
-    private void EventEnter(ISpawner spawner)
+    private void EventEnter(IStructure structure)
     {
-        if (!spawner.Equals(this)) return;
+        if (!structure.Equals(this)) return;
 
         intentRenderer.enabled = true;
     }
 
-    private void EventExit(ISpawner spawner)
+    private void EventExit(IStructure structure)
     {
-        if (!spawner.Equals(this)) return;
+        if (!structure.Equals(this)) return;
 
         intentRenderer.enabled = false;
     }

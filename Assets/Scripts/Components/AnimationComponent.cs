@@ -36,7 +36,7 @@ public class AnimationComponent : MonoBehaviour
         animator.Play("Die");
     }
 
-    public bool CurrentAnimationOver() => animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.95f;
+    public float CurrentAnimationRatio() => animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
 
     private void FlipModel(Vector3 direction)
     {

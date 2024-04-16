@@ -324,10 +324,12 @@ MonoBehaviour:
   lineRenderer: {fileID: 8853769721350019645}
   unitData: {fileID: 0}
   intentDuration: 0.5
+  attackTimestamp: 0.33
   leader: {fileID: 0}
   target: {fileID: 0}
   state: 0
   attackTimer: 0
+  hasAttacked: 0
 --- !u!1 &4269710481095850862
 GameObject:
   m_ObjectHideFlags: 0

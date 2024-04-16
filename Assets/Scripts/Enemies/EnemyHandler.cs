@@ -22,12 +22,14 @@ public class EnemyHandler : MonoBehaviour
 
     [Header("Data")]
     [SerializeField, ReadOnly] private UnitData unitData;
+    [SerializeField] private float attackTimestamp;
 
     [Header("Debug")]
     [SerializeField, ReadOnly] private UnitData baseData;
     [SerializeField, ReadOnly] private UnitData target;
     [SerializeField, ReadOnly] private EnemyState state;
     [SerializeField, ReadOnly] private float attackTimer;
+    [SerializeField, ReadOnly] private bool hasAttacked;
 
     public UnitData UnitData { get { return unitData; } }
 
@@ -99,8 +101,16 @@ public class EnemyHandler : MonoBehaviour
                 break;
             case EnemyState.Attacking:
 
+                // Attack part-way in animation
+                float ratio = animationn.CurrentAnimationRatio();
+                if (ratio >= attackTimestamp && !hasAttacked && target.transform != null)
+                {
+                    GameLogic.AttackUnit(unitData, target);
+                    hasAttacked = true;
+                }
+
                 // Wait until animation is over
-                if (animationn.CurrentAnimationOver())
+                if (ratio >= 0.95f)
                 {
                     attackTimer = unitData.attackSpeed;
                     state = target.transform == null ? EnemyState.Chasing : EnemyState.Aggravated;
@@ -158,8 +168,9 @@ public class EnemyHandler : MonoBehaviour
         {
             if (attackTimer <= 0)
             {
-                GameLogic.AttackUnit(unitData, target);
+                //GameLogic.AttackUnit(unitData, target);
 
+                hasAttacked = false;
                 animationn.Attack();
                 return true;
             }

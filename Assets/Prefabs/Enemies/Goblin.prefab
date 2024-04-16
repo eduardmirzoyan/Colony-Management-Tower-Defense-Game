@@ -228,13 +228,13 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   goldDropPrefab: {fileID: 2345373851655924340, guid: 304367827d8096f4b9831197f4194d81, type: 3}
-  corpsePrefab: {fileID: 5152117498362879592, guid: d56d0ffb93ac4d34d9294ceeb7224c69, type: 3}
   unitData: {fileID: 0}
-  player: {fileID: 0}
+  attackTimestamp: 0.33
+  baseData: {fileID: 0}
   target: {fileID: 0}
   state: 0
   attackTimer: 0
-  printLogs: 0
+  hasAttacked: 0
 --- !u!1 &366731002654704076
 GameObject:
   m_ObjectHideFlags: 0

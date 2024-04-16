@@ -23,7 +23,7 @@ public class GoldDropHandler : MonoBehaviour
             playerData.goldHeld += goldValue;
 
             // Event
-            GameEvents.instance.TriggerOnGoldGain(playerData);
+            GameEvents.instance.TriggerOnGoldChange(playerData);
 
             // Destroy this
             Destroy(gameObject);
