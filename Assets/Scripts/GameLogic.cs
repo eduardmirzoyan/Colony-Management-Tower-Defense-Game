@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public static class GameLogic
 {
@@ -12,6 +9,7 @@ public static class GameLogic
         if (victim.currentHP <= 0)
         {
             victim.currentHP = 0;
+            victim.transform = null;
             GameEvents.instance.TriggerOnUnitDie(victim);
         }
     }

@@ -86,16 +86,18 @@ public class EnemyHandler : MonoBehaviour
 
                 break;
             case EnemyState.Aggravated:
+                if (target.transform == null)
+                {
+                    target = null;
+                    state = EnemyState.Chasing;
+                    return;
+                }
 
                 bool attacked = ChaseAndAttackTarget();
                 if (attacked)
                 {
+                    agent.isStopped = true;
                     state = EnemyState.Attacking;
-                }
-                else if (target.transform == null)
-                {
-                    target = null;
-                    state = EnemyState.Chasing;
                 }
 
                 break;
@@ -113,7 +115,9 @@ public class EnemyHandler : MonoBehaviour
                 if (ratio >= 0.95f)
                 {
                     attackTimer = unitData.attackSpeed;
-                    state = target.transform == null ? EnemyState.Chasing : EnemyState.Aggravated;
+                    agent.isStopped = false;
+
+                    state = EnemyState.Aggravated;
                 }
 
                 break;
@@ -168,8 +172,6 @@ public class EnemyHandler : MonoBehaviour
         {
             if (attackTimer <= 0)
             {
-                //GameLogic.AttackUnit(unitData, target);
-
                 hasAttacked = false;
                 animationn.Attack();
                 return true;
@@ -210,7 +212,7 @@ public class EnemyHandler : MonoBehaviour
             Instantiate(goldDropPrefab, transform.position, Quaternion.identity).GetComponent<GoldDropHandler>().Initialize(unitData.goldHeld);
 
         // Create corpse
-        SpawnManager.instance.SpawnCorpse(unitData);
+        SpawnManager.instance.SpawnCorpse(transform);
 
         // Destroy self
         Destroy(gameObject);

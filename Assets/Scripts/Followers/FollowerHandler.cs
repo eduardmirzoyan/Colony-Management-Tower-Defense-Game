@@ -23,6 +23,7 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
     [SerializeField, ReadOnly] private UnitData unitData;
     [SerializeField] private float intentDuration;
     [SerializeField] private float attackTimestamp;
+    [SerializeField] private bool isRanged;
 
     [Header("Debug")]
     [SerializeField, ReadOnly] private UnitData leader;
@@ -146,17 +147,18 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
                 break;
             case FollowerState.Aggravated:
 
-                bool attacked = ChaseAndAttackTarget();
+                if (target.transform == null)
+                {
+                    target = null;
+                    state = FollowerState.Guarding;
+                    return;
+                }
 
+                bool attacked = ChaseAndAttackTarget();
                 if (attacked)
                 {
                     agent.isStopped = true;
                     state = FollowerState.Attacking;
-                }
-                else if (target.transform == null)
-                {
-                    target = null;
-                    state = FollowerState.Guarding;
                 }
 
                 break;
@@ -166,7 +168,11 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
                 float ratio = animationn.CurrentAnimationRatio();
                 if (ratio >= attackTimestamp && !hasAttacked && target.transform != null)
                 {
-                    GameLogic.AttackUnit(unitData, target);
+                    if (isRanged)
+                        SpawnManager.instance.SpawnProjectile(unitData, target);
+                    else
+                        GameLogic.AttackUnit(unitData, target);
+
                     hasAttacked = true;
                 }
 
@@ -176,13 +182,7 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
                     attackTimer = unitData.attackSpeed;
                     agent.isStopped = false;
 
-                    if (target.transform == null)
-                    {
-                        target = null;
-                        state = FollowerState.Guarding;
-                    }
-                    else
-                        state = FollowerState.Aggravated;
+                    state = FollowerState.Aggravated;
                 }
 
                 break;
@@ -221,9 +221,6 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
             if (attackTimer <= 0)
             {
                 hasAttacked = false;
-
-                // Instantiate(projPrefab).GetComponent<ProjectileHandler>().Initialize(unitData, target, 1f);
-
                 animationn.Attack();
                 return true;
             }
@@ -304,7 +301,7 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
         agent.isStopped = true;
 
         // Create corpse
-        SpawnManager.instance.SpawnCorpse(unitData);
+        SpawnManager.instance.SpawnCorpse(transform);
 
         // Destroy self
         Destroy(gameObject);

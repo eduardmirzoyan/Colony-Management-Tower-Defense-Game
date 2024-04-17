@@ -140,7 +140,7 @@ TextureImporter:
       name: pickups_1
       rect:
         serializedVersion: 2
-        x: 64
+        x: 176
         y: 925
         width: 15
         height: 15
@@ -166,7 +166,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -174,6 +174,69 @@ TextureImporter:
       bones: []
       spriteID: 26e5b2fd5483b6248bd236a5d1c901f9
       internalID: -1231095918
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pickups_3
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 925
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0b7c00b2a0b238745ac0a3ab1596460f
+      internalID: -1186525190
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pickups_4
+      rect:
+        serializedVersion: 2
+        x: 208
+        y: 925
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 193742136a4bbbe418b06c2cbdc399f0
+      internalID: 1851214589
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pickups_5
+      rect:
+        serializedVersion: 2
+        x: 225
+        y: 925
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 148c51bfce57b5f499d7e8ae12c6829d
+      internalID: -1095625723
       vertices: []
       indices: 
       edges: []
@@ -190,6 +253,9 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       pickups_0: -50050853
+      pickups_3: -1186525190
+      pickups_4: 1851214589
+      pickups_5: -1095625723
       pickups_1: -1860757520
       pickups_2: -1231095918
   spritePackingTag: 

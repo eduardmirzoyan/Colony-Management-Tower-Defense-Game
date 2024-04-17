@@ -281,25 +281,25 @@ Tilemap:
   m_TileMatrixArray:
   - m_RefCount: 0
     m_Data:
-      e00: 0
+      e00: -1.7453991e-38
       e01: 0
-      e02: 1.1020282e-38
-      e03: 1.1020282e-38
-      e10: 0
+      e02: -1.6643015e+10
+      e03: -1.6643015e+10
+      e10: 9.43e-43
       e11: 0
-      e12: 9.29e-43
-      e13: 9.29e-43
-      e20: -9.397121e-21
+      e12: 9.43e-43
+      e13: 9.43e-43
+      e20: -2.0996508e+31
       e21: 1e-45
-      e22: -5.1943727e-29
-      e23: -1.6205137e+29
+      e22: 1.727017e-28
+      e23: 1.7873878e+29
       e30: 4.5904e-41
       e31: 0
-      e32: 9.29e-43
-      e33: 9.32e-43
+      e32: 9.44e-43
+      e33: 9.47e-43
   m_TileColorArray:
   - m_RefCount: 0
-    m_Data: {r: 4.0638e-41, g: 4.0638e-41, b: 4.0638e-41, a: 4.0638e-41}
+    m_Data: {r: 4.0739e-41, g: 4.0739e-41, b: 4.0739e-41, a: 4.0739e-41}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -647,10 +647,10 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 469355633}
   - {fileID: 257569558}
   - {fileID: 1780119995}
   - {fileID: 239121391}
+  - {fileID: 469355633}
   m_Father: {fileID: 0}
   m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -721,7 +721,7 @@ RectTransform:
   - {fileID: 1680457132}
   - {fileID: 1571551434}
   m_Father: {fileID: 235086580}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
@@ -800,7 +800,7 @@ RectTransform:
   - {fileID: 280448079}
   - {fileID: 409881910}
   m_Father: {fileID: 235086580}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -1063,7 +1063,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 235086580}
-  m_RootOrder: 0
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2788,6 +2788,7 @@ MonoBehaviour:
   waveData:
     numEnemies: 0
     numKilled: 0
+  printLogs: 0
 --- !u!1 &1733685000
 GameObject:
   m_ObjectHideFlags: 0
@@ -2836,6 +2837,8 @@ MonoBehaviour:
   meleePrefab: {fileID: 2125321376028431216, guid: 6e29057b9c516fb4f84525a8f739b2fe, type: 3}
   rangedPrefab: {fileID: 2125321376028431216, guid: b75d096c519b26949a580ff9e401fcb4, type: 3}
   corpsePrefab: {fileID: 5152117498362879592, guid: d56d0ffb93ac4d34d9294ceeb7224c69, type: 3}
+  projectilePrefab: {fileID: 7059857232266673159, guid: 2d5c27e6c884b0c4eb8b5d4ba90d996f, type: 3}
+  projectileSpeed: 5
   worldData:
     rooms: []
     baseData: {fileID: 0}
@@ -2966,7 +2969,7 @@ RectTransform:
   - {fileID: 36014590}
   - {fileID: 1388109183}
   m_Father: {fileID: 235086580}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

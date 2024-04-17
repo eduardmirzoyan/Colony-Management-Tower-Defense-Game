@@ -331,6 +331,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageFlash: {fileID: 4011175363227670816}
   intentRenderer: {fileID: 209526252343818605}
+  collider2d: {fileID: 3519441093138806698}
   unitData: {fileID: 0}
 --- !u!1 &3779139732644773057
 GameObject:

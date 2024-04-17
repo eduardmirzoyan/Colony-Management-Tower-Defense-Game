@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int spawnMultiplier;
 
     [SerializeField] private WaveData waveData;
+    [SerializeField] private bool printLogs;
 
     public static GameManager instance;
     private void Awake()
@@ -47,7 +48,6 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(0.1f);
 
-        //WorldManager.instance.BakeNavMesh(); // TEST
         DiscoverRoom(worldData.playerData.roomData);
         EnterRoom(worldData.playerData.roomData);
 
@@ -75,7 +75,7 @@ public class GameManager : MonoBehaviour
 
     public void DiscoverRoom(RoomData roomData)
     {
-        print("Begin to prepare...");
+        if (printLogs) print("Enter prepare state");
 
         // Discover room
         if (!roomData.isDiscovered)
@@ -83,25 +83,24 @@ public class GameManager : MonoBehaviour
 
         // Calculate wave
         SetupWave(out waveData);
-        if (waveData is null)
-        {
-            // TODO
-            // Finish wave
-            // CompleteWave();
-            // return;
-        }
 
         // Now player needs to prepare for wave
         gameState = GameState.Prepare;
 
         GameEvents.instance.TriggerOnStatePrepare(waveData);
         GameEvents.instance.TriggerOnDiscoverRoom(roomData);
+
+        if (waveData is null)
+        {
+            // Finish wave
+            CompleteWave();
+            return;
+        }
     }
 
     public void StartWave()
     {
-        print("Starting Wave...");
-        print(waveData);
+        if (printLogs) print("Starting Wave: " + waveData);
 
         // Start spawning
         StartCoroutine(SpawnEnemiesOverTime(waveData, spawnDelay));
@@ -123,7 +122,7 @@ public class GameManager : MonoBehaviour
 
     public void CompleteWave()
     {
-        print("Wave Complete...");
+        if (printLogs) print("Wave Complete");
 
         // Do any cleanup
         waveData = null;
@@ -137,7 +136,7 @@ public class GameManager : MonoBehaviour
     public void GameWin()
     {
         // Win game!
-        print("You win!");
+        if (printLogs) print("You win!");
 
         // Load new level
         TransitionManager.instance.ReloadScene();
@@ -146,7 +145,7 @@ public class GameManager : MonoBehaviour
     public void GameLose()
     {
         // Win game!
-        print("You Lose!");
+        if (printLogs) print("You Lose!");
 
         // Load new level
         TransitionManager.instance.ReloadScene();
@@ -166,7 +165,7 @@ public class GameManager : MonoBehaviour
     private void SetupWave(out WaveData waveData)
     {
         // Decide how many enemies to spawn (based on number of room discovered)
-        int numEnemies = worldData.NumDiscoveredRooms * spawnMultiplier;
+        int numEnemies = 1; //worldData.NumDiscoveredRooms * spawnMultiplier;
 
         // Find valid rooms to generate
         Dictionary<RoomData, int> spawnRoomTable = new();
@@ -212,8 +211,6 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator SpawnEnemiesOverTime(WaveData waveData, float spawnDelay)
     {
-        print("Started spawning enemies...");
-
         int numEnemiesToSpawn = waveData.numEnemies;
 
         // Spawn 1 enemy from each location over time
@@ -235,8 +232,6 @@ public class GameManager : MonoBehaviour
 
             yield return new WaitForSeconds(spawnDelay);
         }
-
-        print("Finished spawning enemies...");
     }
 
     #endregion

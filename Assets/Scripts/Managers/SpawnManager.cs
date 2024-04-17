@@ -10,6 +10,10 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private GameObject meleePrefab;
     [SerializeField] private GameObject rangedPrefab;
     [SerializeField] private GameObject corpsePrefab;
+    [SerializeField] private GameObject projectilePrefab;
+
+    [Header("Settings")]
+    [SerializeField] private float projectileSpeed;
 
     [Header("Debug")]
     [SerializeField, ReadOnly] private WorldData worldData;
@@ -61,9 +65,14 @@ public class SpawnManager : MonoBehaviour
         GameEvents.instance.TriggerOnUnitSpawn(copy);
     }
 
-    public void SpawnCorpse(UnitData unitData)
+    public void SpawnProjectile(UnitData unitData, UnitData target)
     {
-        Animator animator = unitData.transform.GetComponent<Animator>();
+        Instantiate(projectilePrefab).GetComponent<ProjectileHandler>().Initialize(unitData, target);
+    }
+
+    public void SpawnCorpse(Transform transform)
+    {
+        Animator animator = transform.GetComponent<Animator>();
         Instantiate(corpsePrefab, transform.position, Quaternion.identity).GetComponent<CorpseHandler>().Initialize(animator.runtimeAnimatorController);
     }
 }

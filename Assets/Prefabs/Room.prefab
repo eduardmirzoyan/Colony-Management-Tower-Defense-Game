@@ -74,12 +74,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   intentRenderer: {fileID: 7488252857601634834}
+  collider2d: {fileID: 3763331666992950174}
+  enabledSprite: {fileID: 483624488, guid: f00e87e825a671b4686c5575b63c7f46, type: 3}
+  disabledSprite: {fileID: -478259808, guid: f00e87e825a671b4686c5575b63c7f46, type: 3}
+  disabledColor: {r: 0, g: 0, b: 0, a: 0.5019608}
   roomData:
     gridPosition: {x: 0, y: 0}
     size: 0
     worldPosition: {x: 0, y: 0, z: 0}
     roomType: 0
     isDiscovered: 0
+    units: []
 --- !u!1 &2448932179240974990
 GameObject:
   m_ObjectHideFlags: 0
@@ -633,12 +638,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   intentRenderer: {fileID: 2108486403137845786}
+  collider2d: {fileID: 8931014946854285615}
+  enabledSprite: {fileID: 483624488, guid: f00e87e825a671b4686c5575b63c7f46, type: 3}
+  disabledSprite: {fileID: -478259808, guid: f00e87e825a671b4686c5575b63c7f46, type: 3}
+  disabledColor: {r: 0, g: 0, b: 0, a: 0.5019608}
   roomData:
     gridPosition: {x: 0, y: 0}
     size: 0
     worldPosition: {x: 0, y: 0, z: 0}
     roomType: 0
     isDiscovered: 0
+    units: []
 --- !u!1 &4480893072443351621
 GameObject:
   m_ObjectHideFlags: 0
@@ -981,6 +991,7 @@ MonoBehaviour:
     worldPosition: {x: 0, y: 0, z: 0}
     roomType: 0
     isDiscovered: 0
+    units: []
   dimIntensity: 0
   lowIntensity: 0.25
   brightIntensity: 0.9
@@ -1113,12 +1124,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   intentRenderer: {fileID: 5613899670707440831}
+  collider2d: {fileID: 3804695415174478602}
+  enabledSprite: {fileID: 483624488, guid: f00e87e825a671b4686c5575b63c7f46, type: 3}
+  disabledSprite: {fileID: -478259808, guid: f00e87e825a671b4686c5575b63c7f46, type: 3}
+  disabledColor: {r: 0, g: 0, b: 0, a: 0.5019608}
   roomData:
     gridPosition: {x: 0, y: 0}
     size: 0
     worldPosition: {x: 0, y: 0, z: 0}
     roomType: 0
     isDiscovered: 0
+    units: []
 --- !u!1 &7061726958576142212
 GameObject:
   m_ObjectHideFlags: 0
@@ -1277,12 +1293,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   intentRenderer: {fileID: 923369598955958891}
+  collider2d: {fileID: 6665460634640507938}
+  enabledSprite: {fileID: 483624488, guid: f00e87e825a671b4686c5575b63c7f46, type: 3}
+  disabledSprite: {fileID: -478259808, guid: f00e87e825a671b4686c5575b63c7f46, type: 3}
+  disabledColor: {r: 0, g: 0, b: 0, a: 0.5019608}
   roomData:
     gridPosition: {x: 0, y: 0}
     size: 0
     worldPosition: {x: 0, y: 0, z: 0}
     roomType: 0
     isDiscovered: 0
+    units: []
 --- !u!1 &7889176705621349407
 GameObject:
   m_ObjectHideFlags: 0

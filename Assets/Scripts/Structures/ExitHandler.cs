@@ -6,6 +6,7 @@ public class ExitHandler : MonoBehaviour, IStructure
 {
     [Header("References")]
     [SerializeField] private SpriteRenderer intentRenderer;
+    [SerializeField] private Collider2D collider2d;
 
     public void Use(UnitData _)
     {
@@ -16,13 +17,18 @@ public class ExitHandler : MonoBehaviour, IStructure
     {
         GameEvents.instance.OnEnterStructure += EventEnter;
         GameEvents.instance.OnExitStructure += EventExit;
-        intentRenderer.enabled = false;
+        GameEvents.instance.OnStateExpand += EventStateExpand;
+        GameEvents.instance.OnStatePrepare += EventStatePrepare;
+        GameEvents.instance.OnStateDefend += EventStateExpand;
     }
 
     private void OnDestroy()
     {
         GameEvents.instance.OnEnterStructure -= EventEnter;
         GameEvents.instance.OnExitStructure -= EventExit;
+        GameEvents.instance.OnStateExpand -= EventStateExpand;
+        GameEvents.instance.OnStatePrepare -= EventStatePrepare;
+        GameEvents.instance.OnStateDefend -= EventStateExpand;
     }
 
     #region Events
@@ -39,6 +45,18 @@ public class ExitHandler : MonoBehaviour, IStructure
         if (!structure.Equals(this)) return;
 
         intentRenderer.enabled = false;
+    }
+
+    private void EventStateExpand()
+    {
+        // Allow interaction
+        collider2d.enabled = true;
+    }
+
+    private void EventStatePrepare(WaveData _)
+    {
+        // Disable interaction
+        collider2d.enabled = false;
     }
 
     #endregion

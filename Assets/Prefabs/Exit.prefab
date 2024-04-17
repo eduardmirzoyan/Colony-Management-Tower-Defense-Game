@@ -234,6 +234,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   intentRenderer: {fileID: 813235954982365157}
+  collider2d: {fileID: 460285563829297182}
 --- !u!1 &5095626462003563168
 GameObject:
   m_ObjectHideFlags: 0
