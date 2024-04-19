@@ -41,6 +41,7 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
         StartCoroutine(ShowIntent(Intent.Defend, intentDuration));
         state = FollowerState.Guarding;
         intentRenderer.sprite = null;
+        agent.speed = unitData.moveSpeed;
 
         gameObject.name = unitData.ToString();
     }
@@ -64,6 +65,7 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
+        agent.speed = 0f;
         agent.avoidancePriority = Random.Range(0, 1000);
         intentRenderer.sprite = null;
         outlineRenderer.enabled = false;
@@ -147,6 +149,10 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
                 break;
             case FollowerState.Aggravated:
 
+                // Reduce attack timer 
+                if (attackTimer > 0)
+                    attackTimer -= Time.deltaTime;
+
                 if (target.transform == null)
                 {
                     target = null;
@@ -154,15 +160,22 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
                     return;
                 }
 
-                bool attacked = ChaseAndAttackTarget();
-                if (attacked)
+                bool canAttack = ChaseAndAttackTarget();
+                if (canAttack)
                 {
+                    attackTimer = unitData.attackSpeed;
+                    animationn.Attack();
+                    hasAttacked = false;
                     agent.isStopped = true;
                     state = FollowerState.Attacking;
                 }
 
                 break;
             case FollowerState.Attacking:
+
+                // Reduce attack timer 
+                if (attackTimer > 0)
+                    attackTimer -= Time.deltaTime;
 
                 // Attack part-way in animation
                 float ratio = animationn.CurrentAnimationRatio();
@@ -172,6 +185,7 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
                         SpawnManager.instance.SpawnProjectile(unitData, target);
                     else
                         GameLogic.AttackUnit(unitData, target);
+                    //SpawnManager.instance.SpawnSlash(unitData, target);
 
                     hasAttacked = true;
                 }
@@ -179,9 +193,7 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
                 // Wait until animation is over
                 if (ratio >= 0.95f)
                 {
-                    attackTimer = unitData.attackSpeed;
                     agent.isStopped = false;
-
                     state = FollowerState.Aggravated;
                 }
 
@@ -208,28 +220,21 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
 
     private bool ChaseAndAttackTarget()
     {
+        // Get closer if far
         if (Vector2.Distance(transform.position, target.transform.position) > unitData.attackRange)
         {
-            // Get closer
             agent.isStopped = false;
             agent.SetDestination(target.transform.position);
-            animationn.Movement(agent.velocity);
         }
+        // Stop moving and wait
         else
         {
             agent.isStopped = true;
             if (attackTimer <= 0)
-            {
-                hasAttacked = false;
-                animationn.Attack();
                 return true;
-            }
-            else
-            {
-                animationn.Movement(agent.velocity);
-                attackTimer -= Time.deltaTime;
-            }
         }
+
+        animationn.Movement(agent.velocity);
 
         return false;
     }

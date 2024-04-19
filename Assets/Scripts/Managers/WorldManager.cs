@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using UnityEngine.AI;
-using NavMeshPlus;
 using NavMeshPlus.Components;
 
 public class WorldManager : MonoBehaviour
@@ -13,7 +11,8 @@ public class WorldManager : MonoBehaviour
     [SerializeField] private Tilemap wallTilemap;
     [SerializeField] private TileBase floorTile;
     [SerializeField] private TileBase wallTile;
-    [SerializeField] private NavMeshSurface navMeshSurface;
+    [SerializeField] private NavMeshSurface allyNavMesh;
+    [SerializeField] private NavMeshSurface enemyNavMesh;
     [SerializeField] private Transform followersParent;
     [SerializeField] private Transform markersParent;
     [SerializeField] private Transform enemiesParent;
@@ -247,6 +246,7 @@ public class WorldManager : MonoBehaviour
 
     public void BakeNavMesh()
     {
-        navMeshSurface.BuildNavMesh();
+        allyNavMesh.BuildNavMesh();
+        enemyNavMesh.BuildNavMesh();
     }
 }

@@ -152,6 +152,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 5152117497598941664}
+  shadowRenderer: {fileID: 5152117498679917733}
   animator: {fileID: 3886062922796197054}
   lingerDuration: 1
 --- !u!1 &5152117498679917731

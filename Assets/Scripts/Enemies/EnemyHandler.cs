@@ -38,6 +38,7 @@ public class EnemyHandler : MonoBehaviour
         this.unitData = unitData;
         this.baseData = baseData;
         state = EnemyState.Chasing;
+        agent.speed = unitData.moveSpeed;
 
         gameObject.name = unitData.ToString();
     }
@@ -47,6 +48,7 @@ public class EnemyHandler : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
+        agent.speed = 0f;
         agent.avoidancePriority = Random.Range(0, MAX_PRIORITY);
     }
 
@@ -86,6 +88,11 @@ public class EnemyHandler : MonoBehaviour
 
                 break;
             case EnemyState.Aggravated:
+
+                // Reduce attack timer 
+                if (attackTimer > 0)
+                    attackTimer -= Time.deltaTime;
+
                 if (target.transform == null)
                 {
                     target = null;
@@ -93,15 +100,22 @@ public class EnemyHandler : MonoBehaviour
                     return;
                 }
 
-                bool attacked = ChaseAndAttackTarget();
-                if (attacked)
+                bool canAttack = ChaseAndAttackTarget();
+                if (canAttack)
                 {
+                    attackTimer = unitData.attackSpeed;
+                    animationn.Attack();
+                    hasAttacked = false;
                     agent.isStopped = true;
                     state = EnemyState.Attacking;
                 }
 
                 break;
             case EnemyState.Attacking:
+
+                // Reduce attack timer 
+                if (attackTimer > 0)
+                    attackTimer -= Time.deltaTime;
 
                 // Attack part-way in animation
                 float ratio = animationn.CurrentAnimationRatio();
@@ -114,9 +128,7 @@ public class EnemyHandler : MonoBehaviour
                 // Wait until animation is over
                 if (ratio >= 0.95f)
                 {
-                    attackTimer = unitData.attackSpeed;
                     agent.isStopped = false;
-
                     state = EnemyState.Aggravated;
                 }
 
@@ -162,26 +174,22 @@ public class EnemyHandler : MonoBehaviour
 
     private bool ChaseAndAttackTarget()
     {
+        // Get closer if far
         if (Vector2.Distance(transform.position, target.transform.position) > unitData.attackRange)
         {
-            // Get closer
+            agent.isStopped = false;
             agent.SetDestination(target.transform.position);
-            animationn.Movement(agent.velocity);
+
         }
+        // Stop moving and wait
         else
         {
+            agent.isStopped = true;
             if (attackTimer <= 0)
-            {
-                hasAttacked = false;
-                animationn.Attack();
                 return true;
-            }
-            else
-            {
-                animationn.Movement(agent.velocity);
-                attackTimer -= Time.deltaTime;
-            }
         }
+
+        animationn.Movement(agent.velocity);
 
         return false;
     }

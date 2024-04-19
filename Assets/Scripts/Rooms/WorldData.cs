@@ -32,7 +32,7 @@ public class WorldData
 
             int count = 0;
             foreach (RoomData room in rooms)
-                count += room.units.Count;
+                count += room.allies.Count;
 
             return count;
         }

@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8870e030497c0bb4383a88def2b9c9de, type: 3}
   m_Name: Movement Settings
   m_EditorClassIdentifier: 
-  maxSpeed: 5
+  maxSpeed: 4
   acceleration: 20
   deceleration: 40

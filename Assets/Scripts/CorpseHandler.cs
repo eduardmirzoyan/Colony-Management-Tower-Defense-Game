@@ -6,6 +6,7 @@ public class CorpseHandler : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private SpriteRenderer shadowRenderer;
     [SerializeField] private Animator animator;
 
     [Header("Settings")]
@@ -24,7 +25,10 @@ public class CorpseHandler : MonoBehaviour
         float elapsed = 0f;
         while (elapsed < lingerDuration)
         {
-            spriteRenderer.color = Color.Lerp(Color.white, Color.clear, elapsed / lingerDuration);
+            Color color = Color.Lerp(Color.white, Color.clear, elapsed / lingerDuration);
+            spriteRenderer.color = color;
+            shadowRenderer.color = color;
+
             elapsed += Time.deltaTime;
             yield return null;
         }

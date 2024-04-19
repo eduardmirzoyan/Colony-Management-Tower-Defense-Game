@@ -7,6 +7,7 @@ public class ProjectileHandler : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private float speed;
     [SerializeField] private float height;
+    [SerializeField] private Vector3 offset;
 
     public void Initialize(UnitData source, UnitData target)
     {
@@ -15,8 +16,8 @@ public class ProjectileHandler : MonoBehaviour
 
     private IEnumerator FlyOverTime(UnitData source, UnitData target, float speed, float height)
     {
-        Vector3 startPosition = source.transform.position;
-        Vector3 endPosition = target.transform.position;
+        Vector3 startPosition = source.transform.position + offset;
+        Vector3 endPosition = target.transform.position + offset;
         Transform endTransform = target.transform;
         transform.position = startPosition;
 
@@ -31,7 +32,7 @@ public class ProjectileHandler : MonoBehaviour
             // Travel in a projectile motion
             float ratio = elapsed / duration;
             Vector3 ac = Vector3.Lerp(startPosition, control, ratio);
-            Vector3 cb = Vector3.Lerp(control, endTransform.position, ratio);
+            Vector3 cb = Vector3.Lerp(control, endTransform.position + offset, ratio);
             currentPosition = Vector3.Lerp(ac, cb, ratio);
             transform.position = currentPosition;
 
@@ -45,8 +46,13 @@ public class ProjectileHandler : MonoBehaviour
             yield return null;
         }
 
-        transform.position = endTransform.position;
-        GameLogic.AttackUnit(source, target);
+        // If enemy is still alive during arrival
+        if (endTransform != null)
+        {
+            transform.position = endTransform.position + offset;
+            GameLogic.AttackUnit(source, target);
+        }
+
         Destroy(gameObject);
     }
 
@@ -78,5 +84,11 @@ public class ProjectileHandler : MonoBehaviour
 
         // Set to final destination
         transform.position = endPosition;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position + offset, 0.15f);
     }
 }

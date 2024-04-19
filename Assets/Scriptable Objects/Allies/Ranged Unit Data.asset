@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: Ranged Unit Data
   m_EditorClassIdentifier: 
   name: Archer
-  currentHP: 2
-  maxHP: 2
+  currentHP: 1
+  maxHP: 1
   aggroRange: 4
   attackRange: 3
   attackSpeed: 1
-  attackDamage: 1
-  moveSpeed: 0
+  attackDamage: 35
+  moveSpeed: 2
   goldHeld: 0
   transform: {fileID: 0}
   roomData:
@@ -28,3 +28,4 @@ MonoBehaviour:
     worldPosition: {x: 0, y: 0, z: 0}
     roomType: 0
     isDiscovered: 0
+    units: []

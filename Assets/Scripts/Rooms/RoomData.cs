@@ -13,7 +13,7 @@ public class RoomData
     public RoomType roomType;
     public bool isDiscovered;
     public readonly List<RoomData> adjacents;
-    public List<UnitData> units;
+    public List<UnitData> allies;
 
     public RoomData(int i, int j, int size, RoomType roomType)
     {
@@ -23,7 +23,7 @@ public class RoomData
         this.roomType = roomType;
         isDiscovered = false;
         adjacents = new();
-        units = new();
+        allies = new();
     }
 
     public void AddAdjacent(RoomData roomData)
@@ -33,12 +33,12 @@ public class RoomData
 
     public void AddUnit(UnitData unitData)
     {
-        units.Add(unitData);
+        allies.Add(unitData);
     }
 
     public void RemoveUnit(UnitData unitData)
     {
-        units.Remove(unitData);
+        allies.Remove(unitData);
     }
 
     public override string ToString()

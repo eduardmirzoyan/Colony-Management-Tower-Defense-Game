@@ -10,20 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a8f4a21fe07c9504cb169032ad89c5ae, type: 3}
-  m_Name: Enemy Fast Unit Data
+  m_Name: Boss Enemy Data
   m_EditorClassIdentifier: 
-  name: Rogue
-  currentHP: 1
-  maxHP: 1
+  name: Orc
+  currentHP: 200
+  maxHP: 200
   aggroRange: 0
-  attackRange: 0
-  attackSpeed: 0
-  attackDamage: 0
-  moveSpeed: 0
+  attackRange: 1
+  attackSpeed: 2
+  attackDamage: 2
+  moveSpeed: 1.5
+  goldHeld: 10
   transform: {fileID: 0}
   roomData:
     gridPosition: {x: 0, y: 0}
     size: 0
-    worldPosition: {x: 0, y: 0}
+    worldPosition: {x: 0, y: 0, z: 0}
     roomType: 0
     isDiscovered: 0
+    units: []

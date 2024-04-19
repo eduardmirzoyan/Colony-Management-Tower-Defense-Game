@@ -11,6 +11,7 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private GameObject rangedPrefab;
     [SerializeField] private GameObject corpsePrefab;
     [SerializeField] private GameObject projectilePrefab;
+    [SerializeField] private GameObject slashPrefab;
 
     [Header("Settings")]
     [SerializeField] private float projectileSpeed;
@@ -58,7 +59,6 @@ public class SpawnManager : MonoBehaviour
         Vector3 spawnPosition = roomData.worldPosition;
         var enemyHandler = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity).GetComponent<EnemyHandler>();
         copy.Initialize(enemyHandler.transform, roomData);
-        roomData.AddUnit(copy);
 
         enemyHandler.Initialize(copy, worldData.baseData);
 
@@ -68,6 +68,11 @@ public class SpawnManager : MonoBehaviour
     public void SpawnProjectile(UnitData unitData, UnitData target)
     {
         Instantiate(projectilePrefab).GetComponent<ProjectileHandler>().Initialize(unitData, target);
+    }
+
+    public void SpawnSlash(UnitData unitData, UnitData target)
+    {
+        Instantiate(slashPrefab).GetComponent<SlashHandler>().Initialize(unitData, target);
     }
 
     public void SpawnCorpse(Transform transform)

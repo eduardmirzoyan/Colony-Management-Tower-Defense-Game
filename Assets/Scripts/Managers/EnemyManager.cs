@@ -5,7 +5,9 @@ using UnityEngine;
 public class EnemyManager : MonoBehaviour
 {
     [Header("Data")]
-    [SerializeField] private UnitData unitData;
+    [SerializeField] private UnitData normalEnemy;
+    [SerializeField] private UnitData fastEnemy;
+    [SerializeField] private UnitData bossEnemy;
 
     public static EnemyManager instance;
     private void Awake()
@@ -20,8 +22,18 @@ public class EnemyManager : MonoBehaviour
         instance = this;
     }
 
-    public void Spawn(RoomData roomData)
+    public void SpawnNormal(RoomData roomData)
     {
-        SpawnManager.instance.SpawnEnemy(unitData, roomData);
+        SpawnManager.instance.SpawnEnemy(normalEnemy, roomData);
+    }
+
+    public void SpawnFast(RoomData roomData)
+    {
+        SpawnManager.instance.SpawnEnemy(fastEnemy, roomData);
+    }
+
+    public void SpawnBoss(RoomData roomData)
+    {
+        SpawnManager.instance.SpawnEnemy(bossEnemy, roomData);
     }
 }

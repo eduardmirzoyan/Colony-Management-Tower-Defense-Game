@@ -26,9 +26,17 @@ public class DebugManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.G))
+        if (Input.GetKeyDown(KeyCode.F))
         {
-            EnemyManager.instance.Spawn(worldData.rooms[0]);
+            EnemyManager.instance.SpawnNormal(worldData.rooms[0]);
+        }
+        else if (Input.GetKeyDown(KeyCode.G))
+        {
+            EnemyManager.instance.SpawnFast(worldData.rooms[0]);
+        }
+        else if (Input.GetKeyDown(KeyCode.H))
+        {
+            EnemyManager.instance.SpawnBoss(worldData.rooms[0]);
         }
     }
 }

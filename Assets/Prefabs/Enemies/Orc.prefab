@@ -150,9 +150,9 @@ NavMeshAgent:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8521580324038780569}
   m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.25
-  m_Speed: 2
+  m_AgentTypeID: -1372625422
+  m_Radius: 0.15
+  m_Speed: 1.5
   m_Acceleration: 10
   avoidancePriority: 50
   m_AngularSpeed: 80
@@ -198,11 +198,12 @@ MonoBehaviour:
     m_Bits: 0
   goldDropPrefab: {fileID: 2345373851655924340, guid: 304367827d8096f4b9831197f4194d81, type: 3}
   unitData: {fileID: 0}
-  player: {fileID: 0}
+  attackTimestamp: 0
+  baseData: {fileID: 0}
   target: {fileID: 0}
   state: 0
   attackTimer: 0
-  printLogs: 0
+  hasAttacked: 0
 --- !u!61 &2880007059348694754
 BoxCollider2D:
   m_ObjectHideFlags: 0

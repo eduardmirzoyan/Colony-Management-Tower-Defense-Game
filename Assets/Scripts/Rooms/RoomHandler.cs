@@ -136,7 +136,7 @@ public class RoomHandler : MonoBehaviour
         if (this.roomData != roomData) return;
 
         textMesh.color = Color.white;
-        if (roomData.units.Count > 0) textMesh.text = $"x{roomData.units.Count}";
+        if (roomData.allies.Count > 0) textMesh.text = $"x{roomData.allies.Count}";
         else textMesh.text = string.Empty;
     }
 

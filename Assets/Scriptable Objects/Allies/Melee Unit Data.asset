@@ -13,17 +13,19 @@ MonoBehaviour:
   m_Name: Melee Unit Data
   m_EditorClassIdentifier: 
   name: Swordsman
-  currentHP: 3
-  maxHP: 3
+  currentHP: 1
+  maxHP: 1
   aggroRange: 4
   attackRange: 1
-  attackSpeed: 2
-  attackDamage: 1
-  moveSpeed: 0
+  attackSpeed: 1.4
+  attackDamage: 50
+  moveSpeed: 2
+  goldHeld: 0
   transform: {fileID: 0}
   roomData:
     gridPosition: {x: 0, y: 0}
     size: 0
-    worldPosition: {x: 0, y: 0}
+    worldPosition: {x: 0, y: 0, z: 0}
     roomType: 0
     isDiscovered: 0
+    units: []

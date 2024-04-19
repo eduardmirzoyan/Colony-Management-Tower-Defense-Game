@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public const float BASE_MOVE_SPEED = 1;
+
     private enum GameState { Expand, Prepare, Defend }
 
     [Header("Debug")]
@@ -82,7 +84,7 @@ public class GameManager : MonoBehaviour
             roomData.isDiscovered = true;
 
         // Calculate wave
-        SetupWave(out waveData);
+        SetupWave(worldData, out waveData);
 
         // Now player needs to prepare for wave
         gameState = GameState.Prepare;
@@ -162,12 +164,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void SetupWave(out WaveData waveData)
+    private void SetupWave(WorldData worldData, out WaveData waveData)
     {
-        // Decide how many enemies to spawn (based on number of room discovered)
-        int numEnemies = 1; //worldData.NumDiscoveredRooms * spawnMultiplier;
-
-        // Find valid rooms to generate
+        // Find valid rooms to spawn from
         Dictionary<RoomData, int> spawnRoomTable = new();
         foreach (var room in worldData.rooms)
         {
@@ -196,6 +195,10 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        // Decide how many enemies to spawn (based on number of room discovered)
+        int numEnemies = 1; //worldData.NumDiscoveredRooms * spawnMultiplier;
+        int numPoints = worldData.NumDiscoveredRooms * spawnMultiplier;
+
         // Distribute them randomly to each valid room
         int numSpawnRooms = spawnRoomTable.Count;
         for (int i = 0; i < numEnemies; i++)
@@ -222,7 +225,7 @@ public class GameManager : MonoBehaviour
                 if (entry.Value > 0)
                 {
                     // Spawn enemy
-                    EnemyManager.instance.Spawn(entry.Key);
+                    EnemyManager.instance.SpawnNormal(entry.Key);
 
                     // Decrement
                     waveData.spawnRoomTable[entry.Key]--;
