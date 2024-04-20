@@ -38,5 +38,10 @@ public class DebugManager : MonoBehaviour
         {
             EnemyManager.instance.SpawnBoss(worldData.rooms[0]);
         }
+
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            SpawnManager.instance.SpawnGold(worldData.baseData.roomData.worldPosition);
+        }
     }
 }

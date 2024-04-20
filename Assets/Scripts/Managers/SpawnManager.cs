@@ -12,6 +12,7 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private GameObject corpsePrefab;
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private GameObject slashPrefab;
+    [SerializeField] private GameObject goldDropPrefab;
 
     [Header("Settings")]
     [SerializeField] private float projectileSpeed;
@@ -79,5 +80,10 @@ public class SpawnManager : MonoBehaviour
     {
         Animator animator = transform.GetComponent<Animator>();
         Instantiate(corpsePrefab, transform.position, Quaternion.identity).GetComponent<CorpseHandler>().Initialize(animator.runtimeAnimatorController);
+    }
+
+    public void SpawnGold(Vector3 position)
+    {
+        Instantiate(goldDropPrefab, position, Quaternion.identity).GetComponent<GoldDropHandler>().Initialize();
     }
 }

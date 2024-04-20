@@ -10,11 +10,25 @@ public class MinimapManager : MonoBehaviour
     [SerializeField] private Tilemap wallTilemap;
     [SerializeField] private TileBase blankTile;
 
-    [Header("Settings")]
+    [Header("Walls")]
     [SerializeField] private Color wallColor;
-    [SerializeField] private Color activeColor;
-    [SerializeField] private Color inactiveColor;
-    [SerializeField] private Color unknownColor;
+
+    [Header("Standard room")]
+    [SerializeField] private Color defaultActiveColor;
+    [SerializeField] private Color defaultInactiveColor;
+
+    [Header("Base room")]
+    [SerializeField] private Color startActiveColor;
+    [SerializeField] private Color startInactiveColor;
+
+    [Header("Nest room")]
+    [SerializeField] private Color nestActiveColor;
+    [SerializeField] private Color nestInactiveColor;
+
+    [Header("Exit room")]
+    [SerializeField] private Color endActiveColor;
+    [SerializeField] private Color endInactiveColor;
+
 
     public static MinimapManager instance;
     private void Awake()
@@ -56,10 +70,19 @@ public class MinimapManager : MonoBehaviour
                 minimapTilemap.SetTile(cellPosition, blankTile);
 
                 if (wallTilemap.HasTile(cellPosition))
+                {
                     minimapTilemap.SetColor(cellPosition, wallColor);
-                else
-                    minimapTilemap.SetColor(cellPosition, activeColor);
+                    continue;
+                }
 
+                Color color = roomData.roomType switch
+                {
+                    RoomType.Start => startActiveColor,
+                    RoomType.Nest => nestActiveColor,
+                    RoomType.End => endActiveColor,
+                    _ => defaultActiveColor
+                };
+                minimapTilemap.SetColor(cellPosition, color);
             }
         }
     }
@@ -75,9 +98,19 @@ public class MinimapManager : MonoBehaviour
                 minimapTilemap.SetTile(cellPosition, blankTile);
 
                 if (wallTilemap.HasTile(cellPosition))
+                {
                     minimapTilemap.SetColor(cellPosition, wallColor);
-                else
-                    minimapTilemap.SetColor(cellPosition, inactiveColor);
+                    continue;
+                }
+
+                Color color = roomData.roomType switch
+                {
+                    RoomType.Start => startInactiveColor,
+                    RoomType.Nest => nestInactiveColor,
+                    RoomType.End => endInactiveColor,
+                    _ => defaultInactiveColor
+                };
+                minimapTilemap.SetColor(cellPosition, color);
             }
         }
     }
@@ -99,9 +132,19 @@ public class MinimapManager : MonoBehaviour
                     minimapTilemap.SetTile(cellPosition, blankTile);
 
                     if (wallTilemap.HasTile(cellPosition))
+                    {
                         minimapTilemap.SetColor(cellPosition, wallColor);
-                    else
-                        minimapTilemap.SetColor(cellPosition, unknownColor);
+                        continue;
+                    }
+
+                    Color color = room.roomType switch
+                    {
+                        RoomType.Start => startInactiveColor,
+                        RoomType.Nest => nestInactiveColor,
+                        RoomType.End => endInactiveColor,
+                        _ => defaultInactiveColor
+                    };
+                    minimapTilemap.SetColor(cellPosition, color);
                 }
             }
         }

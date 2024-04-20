@@ -6,8 +6,10 @@ using TMPro;
 
 public class RoomHandler : MonoBehaviour
 {
+    private const string unitIcon = "<sprite name=unit>";
+
     [Header("References")]
-    [SerializeField] private PolygonCollider2D polygonCollider2d;
+    [SerializeField] private BoxCollider2D boxCollider2d;
     [SerializeField] private Light2D light2d;
     [SerializeField] private BarrierHandler[] barrierHandlers;
     [SerializeField] private TextMeshPro textMesh;
@@ -48,15 +50,8 @@ public class RoomHandler : MonoBehaviour
         // Set position
         transform.position = roomData.worldPosition;
 
-        // Set boundary
-        Vector2[] path = new Vector2[4]
-        {
-            new (-roomData.size / 2, - roomData.size / 2),
-            new (roomData.size / 2, -roomData.size / 2),
-            new (roomData.size / 2, roomData.size / 2),
-            new (-roomData.size / 2, roomData.size / 2),
-        };
-        polygonCollider2d.SetPath(0, path);
+        // Set boundary (exluding walls)
+        boxCollider2d.size = Vector2.one * (roomData.size - 2);
 
         // Set light
         light2d.intensity = dimIntensity;
@@ -122,7 +117,8 @@ public class RoomHandler : MonoBehaviour
         if (waveData.spawnRoomTable.ContainsKey(roomData))
         {
             textMesh.color = Color.red;
-            textMesh.text = $"x{waveData.spawnRoomTable[roomData]}";
+            int spawnCount = waveData.spawnRoomTable[roomData];
+            textMesh.text = spawnCount > 0 ? $"{unitIcon}x{waveData.spawnRoomTable[roomData]}" : string.Empty;
         }
     }
 
@@ -136,7 +132,7 @@ public class RoomHandler : MonoBehaviour
         if (this.roomData != roomData) return;
 
         textMesh.color = Color.white;
-        if (roomData.allies.Count > 0) textMesh.text = $"x{roomData.allies.Count}";
+        if (roomData.allies.Count > 0) textMesh.text = $"{unitIcon}x{roomData.allies.Count}";
         else textMesh.text = string.Empty;
     }
 

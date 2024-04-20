@@ -216,8 +216,10 @@ public class EnemyHandler : MonoBehaviour
         GameManager.instance.WaveReduced();
 
         // Drop gold if possible
-        if (unitData.goldHeld > 0)
-            Instantiate(goldDropPrefab, transform.position, Quaternion.identity).GetComponent<GoldDropHandler>().Initialize(unitData.goldHeld);
+        for (int i = 0; i < unitData.goldHeld; i++)
+        {
+            SpawnManager.instance.SpawnGold(transform.position);
+        }
 
         // Create corpse
         SpawnManager.instance.SpawnCorpse(transform);

@@ -40,6 +40,7 @@ public class GameManager : MonoBehaviour
         SpawnManager.instance.Initialize(worldData);
         InitializeSpawners();
         waveData = null;
+        //
 
         DebugManager.instance.Initialize(worldData);
 
@@ -51,7 +52,9 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
 
         DiscoverRoom(worldData.playerData.roomData);
-        EnterRoom(worldData.playerData.roomData);
+        // EnterRoom(worldData.playerData.roomData);
+
+        GameEvents.instance.TriggerOnEnterRoom(worldData.playerData.roomData);
 
         GameEvents.instance.TriggerOnGenrateWorld(worldData);
 
@@ -62,13 +65,14 @@ public class GameManager : MonoBehaviour
 
     public void EnterRoom(RoomData roomData)
     {
+        //var playerRoom = worldData.playerData.roomData;
+
+        // If entering same room, then do nothing
+        if (worldData.playerData.roomData == roomData) return;
+
         // Leave previous room
         if (worldData.playerData.roomData != null)
             GameEvents.instance.TriggerOnExitRoom(worldData.playerData.roomData);
-
-        // Check if room was already discovered
-        if (!roomData.isDiscovered)
-            roomData.isDiscovered = true;
 
         // Enter room
         worldData.playerData.roomData = roomData;
