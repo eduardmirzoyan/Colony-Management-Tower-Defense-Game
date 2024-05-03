@@ -15,7 +15,7 @@ MonoBehaviour:
   name: Orc
   currentHP: 200
   maxHP: 200
-  aggroRange: 0
+  aggroRange: -1
   attackRange: 1
   attackSpeed: 2
   attackDamage: 2
@@ -28,4 +28,4 @@ MonoBehaviour:
     worldPosition: {x: 0, y: 0, z: 0}
     roomType: 0
     isDiscovered: 0
-    units: []
+    allies: []

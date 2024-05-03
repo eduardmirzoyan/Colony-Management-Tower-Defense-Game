@@ -102,9 +102,11 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
                     return;
                 }
 
-                bool found = SearchForTarget();
-                if (found)
+                var t = SearchForValidTarget(unitData.aggroRange, enemyLayer);
+                if (t != null)
                 {
+                    target = t;
+
                     StopAllCoroutines();
                     StartCoroutine(ShowIntent(Intent.Attack, intentDuration));
                     lineRenderer.positionCount = 0;
@@ -130,9 +132,11 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
                     return;
                 }
 
-                bool f = SearchForTarget();
-                if (f)
+                var tt = SearchForValidTarget(unitData.aggroRange, enemyLayer);
+                if (tt != null)
                 {
+                    target = tt;
+
                     StopAllCoroutines();
                     StartCoroutine(ShowIntent(Intent.Attack, intentDuration));
                     lineRenderer.positionCount = 0;
@@ -153,13 +157,15 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
                 if (attackTimer > 0)
                     attackTimer -= Time.deltaTime;
 
-                if (target.transform == null)
+                // Check if target is dead or left room
+                if (target.IsDead || TargetOutsideRoom(unitData.roomData, target))
                 {
                     target = null;
                     state = FollowerState.Guarding;
                     return;
                 }
 
+                // Check if started an attack
                 bool canAttack = ChaseAndAttackTarget();
                 if (canAttack)
                 {
@@ -168,6 +174,7 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
                     hasAttacked = false;
                     agent.isStopped = true;
                     state = FollowerState.Attacking;
+                    return;
                 }
 
                 break;
@@ -179,7 +186,7 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
 
                 // Attack part-way in animation
                 float ratio = animationn.CurrentAnimationRatio();
-                if (ratio >= attackTimestamp && !hasAttacked && target.transform != null)
+                if (ratio >= attackTimestamp && !hasAttacked && !target.IsDead)
                 {
                     if (isRanged)
                         SpawnManager.instance.SpawnProjectile(unitData, target);
@@ -195,6 +202,7 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
                 {
                     agent.isStopped = false;
                     state = FollowerState.Aggravated;
+                    return;
                 }
 
                 break;
@@ -206,16 +214,14 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
 
     #region Helpers
 
-    private bool SearchForTarget()
+    private UnitData SearchForValidTarget(float range, LayerMask layer)
     {
-        var hit = Physics2D.OverlapCircle(transform.position, unitData.aggroRange, enemyLayer);
+        var hit = Physics2D.OverlapCircle(transform.position, range, layer);
         if (hit && hit.gameObject.TryGetComponent(out EnemyHandler enemyHandler))
-        {
-            target = enemyHandler.UnitData;
-            return true;
-        }
+            if (!enemyHandler.UnitData.IsDead && !TargetOutsideRoom(unitData.roomData, enemyHandler.UnitData)) // Make sure enemy is alive and within room
+                return enemyHandler.UnitData;
 
-        return false;
+        return null;
     }
 
     private bool ChaseAndAttackTarget()
@@ -274,6 +280,8 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
         }
     }
 
+    private bool TargetOutsideRoom(RoomData roomData, UnitData target) => Vector2.Distance(roomData.worldPosition, target.transform.position) > roomData.size / 2f;
+
     #endregion
 
     #region Events
@@ -323,6 +331,11 @@ public abstract class FollowerHandler : MonoBehaviour, IFollower
 
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, unitData.attackRange);
+
+        if (unitData.roomData == null) return;
+
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawWireSphere(unitData.roomData.worldPosition, unitData.roomData.size / 2f);
 
         if (target?.transform == null) return;
 

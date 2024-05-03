@@ -373,6 +373,7 @@ MonoBehaviour:
   intentDuration: 0.5
   attackTimestamp: 0.7
   isRanged: 1
+  roomSize: 4
   leader: {fileID: 0}
   target: {fileID: 0}
   state: 0

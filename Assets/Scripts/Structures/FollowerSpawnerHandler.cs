@@ -1,12 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class FollowerSpawnerHandler : MonoBehaviour, IStructure
 {
     [Header("References")]
-    [SerializeField] private SpriteRenderer intentRenderer;
+    [SerializeField] private CanvasGroup canvasGroup;
+    [SerializeField] private TextMeshProUGUI costLabel;
     [SerializeField] private Vector3 spawnOffset;
+    [SerializeField] private SpriteRenderer spotRenderer;
 
     [Header("Data")]
     [SerializeField] private RoomData roomData;
@@ -20,18 +24,22 @@ public class FollowerSpawnerHandler : MonoBehaviour, IStructure
     {
         GameEvents.instance.OnEnterStructure += EventEnter;
         GameEvents.instance.OnExitStructure += EventExit;
+        GameEvents.instance.OnGoldChange += EventGoldChange;
     }
 
     private void OnDestroy()
     {
         GameEvents.instance.OnEnterStructure -= EventEnter;
         GameEvents.instance.OnExitStructure -= EventExit;
+        GameEvents.instance.OnGoldChange -= EventGoldChange;
     }
 
     public void Initialize(RoomData roomData)
     {
         this.roomData = roomData;
-        intentRenderer.enabled = false;
+        costLabel.text = $"{cost}";
+        canvasGroup.alpha = 0f;
+        spotRenderer.color = new Color(0f, 0f, 0f, 0.25f);
     }
 
     public void Use(UnitData player)
@@ -53,14 +61,21 @@ public class FollowerSpawnerHandler : MonoBehaviour, IStructure
     {
         if (!structure.Equals(this)) return;
 
-        intentRenderer.enabled = true;
+        spotRenderer.color = new Color(1f, 1f, 1f, 0.25f);
+        canvasGroup.alpha = 1f;
     }
 
     private void EventExit(IStructure structure)
     {
         if (!structure.Equals(this)) return;
 
-        intentRenderer.enabled = false;
+        spotRenderer.color = new Color(0f, 0f, 0f, 0.25f);
+        canvasGroup.alpha = 0f;
+    }
+
+    private void EventGoldChange(UnitData unitData)
+    {
+        costLabel.color = unitData.goldHeld >= cost ? Color.white : Color.red;
     }
 
     #endregion

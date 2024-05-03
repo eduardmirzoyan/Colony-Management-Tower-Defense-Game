@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
@@ -171,7 +172,7 @@ public class GameManager : MonoBehaviour
     private void SetupWave(WorldData worldData, out WaveData waveData)
     {
         // Find valid rooms to spawn from
-        Dictionary<RoomData, int> spawnRoomTable = new();
+        Dictionary<RoomData, int> roomPointAllocationTable = new();
         foreach (var room in worldData.rooms)
         {
             // Each discovered room's non-discovered adjacent rooms are valid rooms
@@ -180,19 +181,19 @@ public class GameManager : MonoBehaviour
                 // Nest rooms are valid
                 if (room.roomType == RoomType.Nest)
                 {
-                    spawnRoomTable[room] = 0;
+                    roomPointAllocationTable[room] = 0;
                 }
                 // Standard rooms need to be checked
                 else if (room.roomType == RoomType.Standard)
                 {
                     foreach (var adjacent in room.adjacents)
                         if (!adjacent.isDiscovered)
-                            spawnRoomTable[adjacent] = 0;
+                            roomPointAllocationTable[adjacent] = 0;
                 }
             }
         }
 
-        if (spawnRoomTable.Count == 0)
+        if (roomPointAllocationTable.Count == 0)
         {
             print("No valid rooms, no enemies will spawn...");
             waveData = null;
@@ -204,16 +205,38 @@ public class GameManager : MonoBehaviour
         int numPoints = worldData.NumDiscoveredRooms * spawnMultiplier;
 
         // Distribute them randomly to each valid room
-        int numSpawnRooms = spawnRoomTable.Count;
+        int numSpawnRooms = roomPointAllocationTable.Count;
         for (int i = 0; i < numEnemies; i++)
         {
             int randomIndex = Random.Range(0, numSpawnRooms);
-            RoomData randomRoom = spawnRoomTable.ElementAt(randomIndex).Key;
-            spawnRoomTable[randomRoom]++; // Increment number to spawn here
+            RoomData randomRoom = roomPointAllocationTable.ElementAt(randomIndex).Key;
+            roomPointAllocationTable[randomRoom]++; // Increment number to spawn here
+        }
+
+        // Convert points to a random enemy type of equivalent value
+        Dictionary<RoomData, List<EnemyType>> spawnRoomTable = new();
+        for (int i = 0; i < roomPointAllocationTable.Keys.Count; i++)
+        {
+            var room = roomPointAllocationTable.Keys.ElementAt(i);
+
+            spawnRoomTable[room] = new();
+
+            // Randomly decide on enemy type
+            EnemyType randomType = (EnemyType)Random.Range(0, 2); // FIXME
+
+            // Get value of enemy
+            int enemyValue = EnemyManager.instance.EnemyValueTable[randomType];
+
+            // Use all points towards enemy
+            while (roomPointAllocationTable[room] >= enemyValue)
+            {
+                spawnRoomTable[room].Add(randomType);
+                roomPointAllocationTable[room] -= enemyValue;
+            }
         }
 
         // Create new wave
-        waveData = new WaveData(numEnemies, spawnRoomTable);
+        waveData = new WaveData(spawnRoomTable);
     }
 
     private IEnumerator SpawnEnemiesOverTime(WaveData waveData, float spawnDelay)
@@ -226,13 +249,16 @@ public class GameManager : MonoBehaviour
             for (int i = 0; i < waveData.spawnRoomTable.Count; i++)
             {
                 var entry = waveData.spawnRoomTable.ElementAt(i);
-                if (entry.Value > 0)
+                if (entry.Value.Count > 0)
                 {
                     // Spawn enemy
-                    EnemyManager.instance.SpawnNormal(entry.Key);
+                    // EnemyManager.instance.SpawnNormal(entry.Key);
+                    EnemyManager.instance.Spawn(entry.Value[0], entry.Key);
+
 
                     // Decrement
-                    waveData.spawnRoomTable[entry.Key]--;
+                    entry.Value.RemoveAt(0);
+                    //waveData.spawnRoomTable[entry.Key]--;
                     numEnemiesToSpawn--;
                 }
             }

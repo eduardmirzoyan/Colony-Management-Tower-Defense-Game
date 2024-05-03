@@ -50,6 +50,9 @@ public class EnemyHandler : MonoBehaviour
         agent.updateUpAxis = false;
         agent.speed = 0f;
         agent.avoidancePriority = Random.Range(0, MAX_PRIORITY);
+
+        // Small offset to fix bug?
+        transform.position += new Vector3(0.1f, 0.1f);
     }
 
     private void Start()

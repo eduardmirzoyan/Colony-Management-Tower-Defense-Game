@@ -117,8 +117,8 @@ public class RoomHandler : MonoBehaviour
         if (waveData.spawnRoomTable.ContainsKey(roomData))
         {
             textMesh.color = Color.red;
-            int spawnCount = waveData.spawnRoomTable[roomData];
-            textMesh.text = spawnCount > 0 ? $"{unitIcon}x{waveData.spawnRoomTable[roomData]}" : string.Empty;
+            int spawnCount = waveData.spawnRoomTable[roomData].Count;
+            textMesh.text = spawnCount > 0 ? $"{unitIcon}x{waveData.spawnRoomTable[roomData].Count}" : string.Empty;
         }
     }
 

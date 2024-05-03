@@ -2,27 +2,34 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class BaseHandler : MonoBehaviour, IStructure
 {
     [Header("References")]
     [SerializeField] private DamageFlash damageFlash;
-    [SerializeField] private SpriteRenderer intentRenderer;
-    [SerializeField] private Collider2D collider2d;
+    [SerializeField] private TextMeshProUGUI instructionLabel;
+    [SerializeField] private SpriteRenderer spotRenderer;
 
     [Header("Data")]
     [SerializeField] private UnitData unitData;
 
+    private bool isInteractable;
+
     public void Initialize(UnitData unitData)
     {
         this.unitData = unitData;
-        intentRenderer.color = Color.clear;
+        isInteractable = false;
+        instructionLabel.text = string.Empty;
+        instructionLabel.enabled = false;
+        spotRenderer.color = new Color(0f, 0f, 0f, 0.25f);
     }
 
     public void Use(UnitData _)
     {
         // Start wave
-        GameManager.instance.StartWave();
+        if (isInteractable)
+            GameManager.instance.StartWave();
     }
 
     private void Start()
@@ -53,14 +60,16 @@ public class BaseHandler : MonoBehaviour, IStructure
     {
         if (!structure.Equals(this)) return;
 
-        intentRenderer.color = Color.white;
+        spotRenderer.color = new Color(1f, 1f, 1f, 0.25f);
+        instructionLabel.enabled = true;
     }
 
     private void EventExit(IStructure structure)
     {
         if (!structure.Equals(this)) return;
 
-        intentRenderer.color = Color.clear;
+        spotRenderer.color = new Color(0f, 0f, 0f, 0.25f);
+        instructionLabel.enabled = false;
     }
 
     private void EventTakeDamage(UnitData unitData)
@@ -81,13 +90,15 @@ public class BaseHandler : MonoBehaviour, IStructure
     private void EventStateExpand()
     {
         // Disable interaction
-        collider2d.enabled = false;
+        isInteractable = false;
+        instructionLabel.text = "";
     }
 
     private void EventStatePrepare(WaveData _)
     {
         // Enable interaction
-        collider2d.enabled = true;
+        isInteractable = true;
+        instructionLabel.text = "Start?";
     }
 
     #endregion

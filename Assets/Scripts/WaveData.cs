@@ -8,7 +8,7 @@ public class WaveData
     public int numEnemies;
     public int numKilled;
     public bool IsCompleted { get { return numKilled >= numEnemies; } }
-    public Dictionary<RoomData, int> spawnRoomTable;
+    public Dictionary<RoomData, List<EnemyType>> spawnRoomTable;
 
     public WaveData()
     {
@@ -16,10 +16,13 @@ public class WaveData
         spawnRoomTable = new();
     }
 
-    public WaveData(int numEnemies, Dictionary<RoomData, int> spawnRoomTable)
+    public WaveData(Dictionary<RoomData, List<EnemyType>> spawnRoomTable)
     {
-        this.numEnemies = numEnemies;
         this.spawnRoomTable = spawnRoomTable;
+
+        numEnemies = 0;
+        foreach (var list in spawnRoomTable.Values)
+            numEnemies += list.Count;
     }
 
     public override string ToString()
