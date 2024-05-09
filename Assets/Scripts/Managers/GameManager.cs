@@ -41,7 +41,6 @@ public class GameManager : MonoBehaviour
         SpawnManager.instance.Initialize(worldData);
         InitializeSpawners();
         waveData = null;
-        //
 
         DebugManager.instance.Initialize(worldData);
 

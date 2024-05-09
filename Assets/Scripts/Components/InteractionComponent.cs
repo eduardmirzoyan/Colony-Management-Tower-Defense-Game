@@ -5,6 +5,9 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class InteractionComponent : MonoBehaviour
 {
+    [Header("References")]
+    [SerializeField] private SpriteRenderer rallyRenderer;
+
     [Header("Debug")]
     [SerializeField] private bool autoRecruit;
 
@@ -114,5 +117,12 @@ public class InteractionComponent : MonoBehaviour
     {
         this.unitData = unitData;
         autoRecruit = unitData != null;
+
+        // Show icon
+        rallyRenderer.enabled = autoRecruit;
+
+        // Trigger event
+        if (autoRecruit) GameEvents.instance.TriggerOnRallyStart();
+        else GameEvents.instance.TriggerOnRallyEnd();
     }
 }

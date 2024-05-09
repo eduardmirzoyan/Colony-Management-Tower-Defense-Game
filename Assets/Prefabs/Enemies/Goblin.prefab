@@ -194,7 +194,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 8612868023410088401}
-  isFacingRight: 0
+  spriteRenderer: {fileID: 366731001588425871}
+  isFacingLeft: 0
 --- !u!114 &5294702892664759745
 MonoBehaviour:
   m_ObjectHideFlags: 0

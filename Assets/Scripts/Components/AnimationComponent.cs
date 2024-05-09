@@ -4,13 +4,18 @@ using UnityEngine;
 
 public class AnimationComponent : MonoBehaviour
 {
+    [Header("References")]
     [SerializeField] private Animator animator;
-    [SerializeField] private bool isFacingRight;
+    [SerializeField] private SpriteRenderer spriteRenderer;
+
+    [Header("Debug")]
+    [SerializeField, ReadOnly] private bool isFacingRight;
 
     private void Start()
     {
         isFacingRight = true;
         animator.Play("Idle");
+        spriteRenderer.flipX = !isFacingRight;
     }
 
     public void Movement(Vector2 velocity)
@@ -44,13 +49,13 @@ public class AnimationComponent : MonoBehaviour
         if (direction.x > 0 && !isFacingRight)
         {
             isFacingRight = true;
-            transform.Rotate(0f, 180f, 0f);
+            spriteRenderer.flipX = !isFacingRight;
         }
         // Else if you are moving left and facing right, also flip
         else if (direction.x < 0 && isFacingRight)
         {
             isFacingRight = false;
-            transform.Rotate(0f, 180f, 0f);
+            spriteRenderer.flipX = !isFacingRight;
         }
     }
 }

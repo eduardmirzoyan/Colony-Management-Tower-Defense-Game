@@ -12,6 +12,7 @@ public class MinimapManager : MonoBehaviour
 
     [Header("Walls")]
     [SerializeField] private Color wallColor;
+    [SerializeField] private Color undiscoveredColor;
 
     [Header("Standard room")]
     [SerializeField] private Color defaultActiveColor;
@@ -117,12 +118,13 @@ public class MinimapManager : MonoBehaviour
 
     private void EventOnDiscover(RoomData roomData)
     {
-        // Gray out room
         foreach (var room in roomData.adjacents)
         {
+            // If already discovered, then skip
             if (room.isDiscovered)
                 continue;
 
+            // Gray out room
             for (int i = 0; i < room.size; i++)
             {
                 for (int j = 0; j < room.size; j++)
@@ -132,19 +134,9 @@ public class MinimapManager : MonoBehaviour
                     minimapTilemap.SetTile(cellPosition, blankTile);
 
                     if (wallTilemap.HasTile(cellPosition))
-                    {
                         minimapTilemap.SetColor(cellPosition, wallColor);
-                        continue;
-                    }
-
-                    Color color = room.roomType switch
-                    {
-                        RoomType.Start => startInactiveColor,
-                        RoomType.Nest => nestInactiveColor,
-                        RoomType.End => endInactiveColor,
-                        _ => defaultInactiveColor
-                    };
-                    minimapTilemap.SetColor(cellPosition, color);
+                    else
+                        minimapTilemap.SetColor(cellPosition, undiscoveredColor);
                 }
             }
         }

@@ -26,8 +26,14 @@ public class GameEvents : MonoBehaviour
     public event Action<IFollower> OnEnterFollower;
     public event Action<IFollower> OnExitFollower;
 
+    public event Action OnRallyStart;
+    public event Action OnRallyEnd;
+
     public void TriggerOnEnterFollower(IFollower follower) => OnEnterFollower?.Invoke(follower);
     public void TriggerOnExitFollower(IFollower follower) => OnExitFollower?.Invoke(follower);
+
+    public void TriggerOnRallyStart() => OnRallyStart?.Invoke();
+    public void TriggerOnRallyEnd() => OnRallyEnd?.Invoke();
 
     #endregion
 

@@ -281,7 +281,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 3980545961720941397}
-  isFacingRight: 0
+  spriteRenderer: {fileID: 2125321375384453408}
+  isFacingLeft: 0
 --- !u!114 &6914736219461162663
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -326,7 +327,6 @@ MonoBehaviour:
   intentDuration: 0.5
   attackTimestamp: 0.33
   isRanged: 0
-  roomSize: 4
   leader: {fileID: 0}
   target: {fileID: 0}
   state: 0
